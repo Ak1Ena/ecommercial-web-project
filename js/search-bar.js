@@ -1,7 +1,7 @@
 // LINE 55 list of Prodyct 
-const searchButton = document.getElementById('search-button');
+//const searchButton = document.getElementById('search-button');
 
-searchButton.addEventListener('click', searchProducts);
+// searchButton.addEventListener('click', searchProducts);
 
 function searchProducts() {
     
