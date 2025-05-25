@@ -12,6 +12,7 @@ app.use(cors());
 app.use(bodyParser.json())
 
 app.use('/api/products', require('./routes/products'));
+app.use('/api/users', require('./routes/users'));
 
 app.listen(PORT, ()=>{
     console.log("Server is running on http://localhost:"+PORT);

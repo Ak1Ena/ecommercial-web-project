@@ -9,9 +9,9 @@ function searchProducts() {
 
     if (searchInput === '') {
         alert('Please enter a search term.');
-        productList.style.display = '';  // แสดงรายการเดิม
-        productListSearch.innerHTML = '';  // ล้างรายการค้นหา
-        productListSearch.style.display = 'none';  // ซ่อนรายการค้นหา
+        productList.style.display = '';  
+        productListSearch.innerHTML = '';
+        productListSearch.style.display = 'none';
         return;
     }
 
@@ -26,9 +26,9 @@ function searchProducts() {
             return res.json();
         })
         .then(data => {
-            productList.style.display = 'none';  // ซ่อนของเดิม
-            productListSearch.style.display = '';  // แสดงรายการค้นหา
-            productListSearch.innerHTML = '';  // ล้างรายการค้นหา
+            productList.style.display = 'none';  
+            productListSearch.style.display = '';
+            productListSearch.innerHTML = '';  
 
             if (data.length === 0) {
                 productListSearch.innerHTML = '<p>No products found.</p>';
