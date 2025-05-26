@@ -20,9 +20,9 @@ router.post('/checkout', (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
         let history = row.history ? JSON.parse(row.history) : [];
-
-        history.push(products);
-        
+        products.forEach(products =>{
+            history.push(products);
+        })
         const UpdatedHistory = JSON.stringify(history);
 
         db.run(`UPDATE users SET history = ? WHERE id = ?`,[UpdatedHistory,id] , function(err) {
