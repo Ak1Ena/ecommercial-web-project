@@ -1,9 +1,23 @@
 const searchButton = document.getElementById('search-button');
-searchButton.addEventListener('click', searchProducts);
-
-function searchProducts() {
-    console.log('Search button clicked');
+searchButton.addEventListener('click', function() {
     const searchInput = document.getElementById('search-input').value.trim();
+    searchProducts(searchInput);
+});
+window.onload = function() {
+
+    if(localStorage.getItem('searchQuery')) {
+        const searchInput = document.getElementById('search-input');
+        searchInput.value = localStorage.getItem('searchQuery');
+        searchProducts(searchInput.value.trim());
+        localStorage.removeItem('searchQuery'); 
+    }else{
+        console.log("No search query found in localStorage.");
+    }
+}
+
+function searchProducts(searchInput) {
+    console.log('Search button clicked');
+    // const searchInput = document.getElementById('search-input').value.trim();
     const productList = document.getElementById('products-list');
     const productListSearch = document.getElementById('products-list-search');
 

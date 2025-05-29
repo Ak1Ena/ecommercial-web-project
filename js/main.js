@@ -222,3 +222,14 @@
     });
 
 })(jQuery);
+
+document.getElementById('search-btn').addEventListener('click', function() {
+    const searchInput = document.getElementById('search').value.trim();
+    console.log('Search button clicked');
+    if (searchInput === '') {
+        alert('Please enter a search term.');
+        return;
+    }
+    localStorage.setItem('searchQuery', searchInput);
+    window.location.href = 'shop-grid.html';
+});
