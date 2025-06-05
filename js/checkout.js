@@ -6,8 +6,8 @@ function submitOrderHandler() {
     console.log("test")
     let items = JSON.parse(localStorage.getItem('items') || '[]');
     let userID = localStorage.getItem('userID');
-    // userID = 1 // For testing purposes, hardcoding userID to 1
-    // items = [{id:1, name: 'Test Product', category: 'Fruit', quantity:10}]; // For testing purposes, hardcoding items
+    userID = 1 // For testing purposes, hardcoding userID to 1
+    items = [{id:1, name: 'Test Product', category: 'Fruit', quantity:10}]; // For testing purposes, hardcoding items
     if (!userID) {
         alert('You must be logged in to checkout.');
         return;

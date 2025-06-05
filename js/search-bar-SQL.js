@@ -51,11 +51,12 @@ function searchProducts(searchInput) {
 
             data.forEach(product => {
                 const productItem = document.createElement('div');
+                    let imgPath = product.img.replace(/\\/g, '/');
                 if (product.discount > 0) {
                     productItem.className = 'col-lg-4';
                     productItem.innerHTML = `
                         <div class="product__discount__item" >
-                                        <div class="product__discount__item__pic set-bg" data-setbg="${product.img}" style="background-image: url('${product.img}'); ">
+                                        <div class="product__discount__item__pic set-bg" data-setbg="${imgPath}" style="background-image: url('${imgPath}'); ">
                                             <div class="product__discount__percent">-${((product.discount / product.price) * 100).toFixed(0)}%</div>
                                             <ul class="product__item__pic__hover">
                                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>

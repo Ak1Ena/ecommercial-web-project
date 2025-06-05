@@ -11,13 +11,14 @@ router.post('/checkout', (req, res) => {
     if (!products || !Array.isArray(products)) {
         return res.status(400).json({ error: 'Invalid request body' });
     }
+    
     db.get(`SELECT history FROM users WHERE id = ?`, [id], (err, row) => {
         if (err) {
             console.error(err.message);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
         if (!row) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: 'User not found !' });
         }
         let history = row.history ? JSON.parse(row.history) : [];
         products.forEach(products =>{
