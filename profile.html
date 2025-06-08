@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ogani | Profile</title> <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+
+    <style>
+        /* CSS เดิมของคุณ */
+        .profile-wrapper {
+            background-image: url("img/blog/details/bg.webp"); /* ตรวจสอบ path ของรูปภาพ */
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 93vh;
+        }
+
+        .profile-box {
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 450px;
+            height: auto; /* ให้ปรับความสูงตามเนื้อหา */
+            max-height: 90vh; /* จำกัดความสูงสูงสุด */
+            overflow-y: auto; /* เพิ่ม scrollbar ถ้าเนื้อหาเกิน */
+        }
+
+        .profile-box h2 {
+            margin-bottom: 20px;
+        }
+
+        .profile-box img {
+            max-width: 150px; /* ปรับขนาดโลโก้ตามต้องการ */
+            margin-bottom: 15px;
+            border-radius: 50%; /* ทำให้รูปภาพเป็นวงกลม */
+            border: 3px solid hsl(0, 0%, 89%); /* เพิ่มขอบสีเขียว */
+            padding: 3px; /* ระยะห่างระหว่างรูปกับขอบ */
+        }
+
+        #greetingMessage {
+            color: #505050; /* สีตัวอักษรเข้มขึ้น */
+            font-size: 26px; /* ขนาดตัวอักษรใหญ่ขึ้น */
+            font-weight: 700; /* ทำให้ตัวหนาขึ้น */
+            margin-top: -10px; /* เพิ่มระยะห่างจากรูปภาพ */
+            margin-bottom: 25px; /* ระยะห่างจากเส้นคั่น */
+            position: relative; /* สำหรับสร้างเส้น pseudo-element */
+            padding-bottom: 15px; /* ระยะห่างระหว่างข้อความกับเส้น */
+        }
+
+        /* สร้างเส้นคั่นใต้ข้อความ "Hi! Username" */
+        #greetingMessage::after {
+            content: '';
+            display: block;
+            width: 80%; /* ความกว้างของเส้น */
+            max-width: 400px; /* จำกัดความกว้างสูงสุด */
+            height: 1px; /* ความหนาของเส้น */
+            background-color: #dddddd; /* สีของเส้น */
+            margin: 0 auto; /* จัดให้อยู่กึ่งกลาง */
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%); /* เลื่อนเส้นไปกึ่งกลางพอดี */
+            border-radius: 5px; /* ทำให้เส้นมีขอบมนเล็กน้อย */
+        }
+
+        .profile-info {
+            text-align: left; /* จัดข้อความชิดซ้าย */
+            margin-bottom: 20px;
+        }
+
+        .profile-info p {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.5;
+            display: flex; /* ทำให้ label และ value อยู่ในบรรทัดเดียวกัน */
+            flex-wrap: wrap; /* ให้ห่อเมื่อหน้าจอเล็ก */
+        }
+
+        .profile-info p strong {
+            display: inline-block; /* ทำให้ Label เป็นบล็อกเล็กๆ */
+            width: 120px; /* กำหนดความกว้างของ Label */
+            flex-shrink: 0; /* ไม่ให้ Label หด */
+            color: #7fad39; /* สีสำหรับ Label */
+        }
+
+        .profile-info p span {
+            flex-grow: 1; /* ให้ค่าข้อมูลขยายเต็มที่ */
+            word-wrap: break-word; /* ให้ข้อความที่ยาวขึ้นบรรทัดใหม่ได้ */
+        }
+
+        .profile-box button {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #dc3545; /* สีแดงสำหรับ Logout */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-box button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__left">
+                        <ul>
+                            <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                            <li>Free Shipping for all Order of $99</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__right">
+                        <div class="header__top__right__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                        </div>
+                        <div class="header__top__right__language">
+                            <img src="img/language.png" alt="">
+                            <div>English</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul>
+                                <li><a href="#">Spanish</a></li>
+                                <li><a href="#">English</a></li>
+                            </ul>
+                        </div>
+                        <div class="header__top__right__auth">
+                            <a href="./login.html"><i class="fa fa-user"></i> Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="profile-wrapper">
+        <div class="profile-box">
+            <h2><img src="img/user.png" alt="Profile Icon"></h2>
+            <h3 id="greetingMessage">Loading Profile...</h3>
+            <div class="profile-info" id="userInfo">
+                <p><strong>First Name:</strong> <span id="displayFirstName"></span></p>
+                <p><strong>Last Name:</strong> <span id="displayLastName"></span></p>
+                <p><strong>Username:</strong> <span id="displayUsername"></span></p>
+                <p><strong>Email:</strong> <span id="displayEmail"></span></p>
+                <p><strong>Phone:</strong> <span id="displayPhone"></span></p>
+                <p><strong>Address:</strong> <span id="displayAddress"></span></p>
+            </div>
+            <button id="logoutButton">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() { // เพิ่ม async
+            const loggedInUserId = localStorage.getItem('loggedInUserId');
+
+            // Function สำหรับอัปเดตส่วน Auth ใน Header
+            function updateAuthSection(userId, username) {
+                const desktopAuthSection = document.querySelector('.header__top__right__auth');
+                // const mobileAuthSection = document.getElementById('mobileAuthSection'); // หากมี Mobile Section
+
+                if (desktopAuthSection) {
+                    if (userId && username) {
+                        desktopAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
+                    } else {
+                        desktopAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
+                    }
+                }
+                // เพิ่มส่วนสำหรับ mobileAuthSection ถ้ามี
+                // if (mobileAuthSection) { ... }
+            }
+
+            // --- Logic สำหรับ Profile Page ---
+            if (!loggedInUserId) {
+                alert("Please log in to view your profile.");
+                window.location.href = "login.html"; // Redirect ไปหน้า Login
+                updateAuthSection(null, null); // อัปเดต Header เป็น Login
+                return; // หยุดการทำงานของ script ที่เหลือ
+            }
+
+            try {
+                // ดึงข้อมูลผู้ใช้จาก Backend API
+                const response = await fetch(`http://localhost:3000/api/profile/${loggedInUserId}`);
+                const user = await response.json(); // อ่าน response จาก Backend
+
+                if (response.ok) { // ถ้า status code เป็น 2xx (สำเร็จ)
+                    // แสดงข้อมูลผู้ใช้
+                    document.getElementById('greetingMessage').textContent = `Hi ! ${user.username || 'Guest'}`;
+                    document.getElementById('displayFirstName').textContent = user.firstName || 'N/A';
+                    document.getElementById('displayLastName').textContent = user.lastName || 'N/A';
+                    document.getElementById('displayUsername').textContent = user.username || 'N/A';
+                    document.getElementById('displayEmail').textContent = user.email || 'N/A';
+                    document.getElementById('displayPhone').textContent = user.phone || 'N/A';
+                    document.getElementById('displayAddress').textContent = user.address || 'N/A';
+
+                    // อัปเดต Header Top Bar ด้วยข้อมูลที่ดึงมา
+                    updateAuthSection(user.id, user.username);
+                } else {
+                    // กรณี Backend แจ้งว่าไม่พบผู้ใช้หรือมีข้อผิดพลาดอื่นๆ
+                    alert("Error loading profile data: " + (user.message || "User not found."));
+                    localStorage.removeItem('loggedInUserId'); // ลบสถานะ Login ที่ไม่ถูกต้อง
+                    window.location.href = "login.html"; // Redirect ไปหน้า Login
+                    updateAuthSection(null, null); // อัปเดต Header เป็น Login
+                }
+            } catch (error) {
+                console.error("Error fetching user profile:", error);
+                alert("An error occurred while loading your profile. Please try logging in again.");
+                localStorage.removeItem('loggedInUserId'); // ลบสถานะ Login หากเกิดข้อผิดพลาดเครือข่าย
+                window.location.href = "login.html"; // Redirect ไปหน้า Login
+                updateAuthSection(null, null); // อัปเดต Header เป็น Login
+            }
+
+            // เหตุการณ์เมื่อคลิกปุ่ม Logout
+            document.getElementById('logoutButton').addEventListener('click', function() {
+                localStorage.removeItem('loggedInUserId'); // ลบสถานะ Login
+                alert("You have been logged out.");
+                window.location.href = "index.html"; // กลับไปหน้าหลัก
+            });
+        });
+    </script>
+</body>
+
+</html>

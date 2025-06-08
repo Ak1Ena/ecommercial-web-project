@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ogani | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+
+    <style>
+        .register-wrapper {
+            background-image: url("img/blog/details/bg.webp");
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 93vh;
+        }
+
+        .register-box {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+            width: 50%;
+            max-width: 520px; /* เพิ่มขนาด */
+            height: 90vh;
+        }
+
+
+        .register-box h2 {
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .register-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .register-box button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: #7fad39;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .register-box button:hover {
+            background: #6e9730;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 14px;
+        }
+
+        .login-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .name-row {
+    display: flex;
+    gap: 10px;
+    margin: 5px 0;
+    
+}
+
+.name-row input {
+    flex: 1;
+    
+}
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Top Bar Begin -->
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="header__top__left">
+                        <ul>
+                            <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                            <li>Free Shipping for all Order of $99</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="header__top__right">
+                        <div class="header__top__right__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                        </div>
+                        <div class="header__top__right__language">
+                            <img src="img/language.png" alt="">
+                            <div>English</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul>
+                                <li><a href="#">Spanish</a></li>
+                                <li><a href="#">English</a></li>
+                            </ul>
+                        </div>
+                        <div class="header__top__right__auth">
+                            <a href="./login.html"><i class="fa fa-user"></i> Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header Top Bar End -->
+
+    <!-- Register Form -->
+    <div class="register-wrapper">
+        <div class="register-box">
+            <h2><img src="img/logo.png" alt="Logo"></h2>
+            <div class="name-row">
+    <input type="text" id="firstName" placeholder="First Name" required>
+    <input type="text" id="lastName" placeholder="Last Name" required>
+</div>
+
+            <form id="registerForm">
+                 <input type="username" id="username" placeholder="Username" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="text" id="phone" placeholder="Phone Number" required>
+                <textarea type="text" id="address" placeholder="Address" rows="3" cols="58" required> </textarea>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <div class="login-link">
+                Already have an account? <a href="login.html">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+    document.getElementById("registerForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const firstName = document.getElementById("firstName").value.trim();
+        const lastName = document.getElementById("lastName").value.trim();
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const address = document.getElementById("address").value.trim();
+        const password = document.getElementById("password").value;
+
+        // Client-side validation
+        const usernameRegex = /^[a-zA-Z0-9]+$/;
+        if (!usernameRegex.test(username)) {
+            alert("Username must be in English letters and numbers only.");
+            return; // หยุดการทำงานถ้า validation ไม่ผ่าน
+        }
+
+        if (!email.endsWith("@gmail.com")) {
+            alert("Email must end with @gmail.com");
+            return; // หยุดการทำงานถ้า validation ไม่ผ่าน
+        }
+
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters.");
+            return; // หยุดการทำงานถ้า validation ไม่ผ่าน
+        }
+
+        if (phone.length !== 10 || isNaN(phone)) {
+            alert("The phone number must be exactly 10 digits and contain only numbers.");
+            return; // หยุดการทำงานถ้า validation ไม่ผ่าน
+        }
+
+        // *** ส่วนนี้คือการส่งข้อมูลไปยัง Backend ***
+        try {
+            const response = await fetch('http://localhost:3000/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstName: firstName,
+                    lastName: lastName,
+                    username: username,
+                    email: email,
+                    phone: phone,
+                    address: address,
+                    password: password
+                }),
+            });
+
+            const data = await response.json(); // อ่าน response จาก Backend
+
+            if (response.ok) { // ถ้า status code เป็น 2xx (สำเร็จ)
+                // แสดง alert แล้วค่อยเปลี่ยนหน้าหลังจากผู้ใช้กด OK
+                alert("ลงทะเบียนสำเร็จ: " + data.message);
+                
+                // ใช้ setTimeout เพื่อให้เบราว์เซอร์มีเวลาประมวลผลการปิด alert
+                // ค่า 0ms หมายถึงให้รันโค้ดทันทีที่ Call Stack ว่าง (หลังจาก alert ปิดไปแล้ว)
+                setTimeout(() => {
+                    window.location.href = "login.html"; // เปลี่ยนไปหน้า login
+                }, 0); // หน่วงเวลา 0 มิลลิวินาที
+            } else { // ถ้ามี error จาก Backend (เช่น 400, 409, 500)
+                console.error("Registration failed details:", data);
+                alert("Registration failed: " + data.message);
+            }
+        } catch (error) {
+            console.error('Error during fetch:', error);
+            alert("An error occurred during registration. Please try again.");
+        }
+    });
+
+    // JavaScript สำหรับ Header Top Bar (เหมือนเดิม)
+    document.addEventListener('DOMContentLoaded', function() {
+        const loggedInUserId = localStorage.getItem('loggedInUserId');
+        let usernameToDisplay = null;
+
+        if (loggedInUserId) {
+            fetch(`http://localhost:3000/api/profile/${loggedInUserId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('User not found or session expired');
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    if (user && user.username) {
+                        usernameToDisplay = user.username;
+                        updateAuthSection(user.id, usernameToDisplay);
+                    } else {
+                        localStorage.removeItem('loggedInUserId');
+                        updateAuthSection(null, null);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching user profile for header:", error);
+                    localStorage.removeItem('loggedInUserId');
+                    updateAuthSection(null, null);
+                });
+        } else {
+            updateAuthSection(null, null);
+        }
+
+        function updateAuthSection(userId, username) {
+            const desktopAuthSection = document.querySelector('.header__top__right__auth');
+            if (desktopAuthSection) {
+                if (userId && username) {
+                    desktopAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
+                } else {
+                    desktopAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
+                }
+            }
+        }
+    });
+</script>
+</body>
+
+</html>

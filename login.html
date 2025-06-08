@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ogani | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+
+    <style>
+        .login-wrapper {
+            background-image: url("img/blog/details/bg.webp");
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 93vh;
+        }
+
+        .login-box {
+            background: #fff;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            width: 450px;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #7fad39;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .login-box button:hover {
+            background: #6e9730;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .register-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Top Bar Begin -->
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="header__top__left">
+                        <ul>
+                            <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                            <li>Free Shipping for all Order of $99</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="header__top__right">
+                        <div class="header__top__right__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                        </div>
+                        <div class="header__top__right__language">
+                            <img src="img/language.png" alt="">
+                            <div>English</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul>
+                                <li><a href="#">Spanish</a></li>
+                                <li><a href="#">English</a></li>
+                            </ul>
+                        </div>
+                        <div class="header__top__right__auth">
+                            <a href="./login.html"><i class="fa fa-user"></i> Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header Top Bar End -->
+
+   <!-- Login Section Begin -->
+    <div class="login-wrapper">
+        <div class="login-box">
+            <h2><img src="img/logo.png" alt="Logo"></h2>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="register-link">
+                Don't have an account? <a href="register.html">Register</a>
+            </div>
+        </div>
+    </div>
+    <!-- Login Section End -->
+
+    <script>
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value.trim(); // username หรือ email
+        const password = document.getElementById("password").value;
+
+        if (!username || !password) {
+            alert("Please enter both username/email and password.");
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:3000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json(); // อ่าน response จาก Backend
+
+            if (response.ok) { // ถ้า status code เป็น 2xx (สำเร็จ)
+                alert(data.message); // แสดง alert
+                // เก็บ userId ที่ Backend ส่งมา เพื่อระบุผู้ใช้ที่ login อยู่
+                localStorage.setItem("loggedInUserId", data.userId);
+                
+                // ใช้ setTimeout เพื่อให้เบราว์เซอร์มีเวลาประมวลผลการปิด alert ก่อนเปลี่ยนหน้า
+                setTimeout(() => {
+                    // เปลี่ยนไปหน้า dashboard.html ตามที่คุณต้องการ
+                    window.location.href = "index.html"; // <--- แก้ไขตรงนี้
+                    // หรือถ้าคุณต้องการไป index.html เหมือนโค้ดเดิม ให้ใช้:
+                    // window.location.href = "index.html"; 
+                }, 0); 
+            } else { // ถ้ามี error จาก Backend (เช่น 401, 500)
+                alert("Login failed: " + data.message);
+            }
+        } catch (error) {
+            console.error('Error during login fetch:', error);
+            alert("An error occurred during login. Please try again.");
+        }
+    });
+
+    // JavaScript สำหรับ Header Top Bar (เหมือนใน register.html และ index.html)
+    // เพื่อแสดงชื่อผู้ใช้หรือปุ่ม Login ตามสถานะ
+    document.addEventListener('DOMContentLoaded', function() {
+        const loggedInUserId = localStorage.getItem('loggedInUserId');
+        
+        if (loggedInUserId) {
+            // ถ้ามี userId, ดึงข้อมูล user จาก Backend
+            fetch(`http://localhost:3000/api/profile/${loggedInUserId}`)
+                .then(response => {
+                    if (!response.ok) { // ตรวจสอบว่า response เป็น ok (200-299)
+                        // ถ้าไม่ ok อาจจะเกิดจาก user ไม่พบ (404) หรือเซสชันหมดอายุ
+                        throw new Error('User not found or session expired. Status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    if (user && user.username) {
+                        updateAuthSection(user.id, user.username);
+                    } else {
+                        // ถ้าดึงข้อมูลไม่ได้ (user not found), ถือว่ายังไม่ login
+                        localStorage.removeItem('loggedInUserId'); // ลบค่าที่ผิดพลาด/หมดอายุ
+                        updateAuthSection(null, null);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching user profile for header:", error);
+                    localStorage.removeItem('loggedInUserId'); // ลบค่าที่อาจหมดอายุหรือผิดพลาด
+                    updateAuthSection(null, null);
+                });
+        } else {
+            // ถ้าไม่มี userId ใน localStorage, แสดงปุ่ม Login ปกติ
+            updateAuthSection(null, null);
+        }
+
+        function updateAuthSection(userId, username) {
+            const desktopAuthSection = document.querySelector('.header__top__right__auth');
+            // const mobileAuthSection = document.getElementById('mobileAuthSection'); // ถ้ามี mobile section
+
+            if (desktopAuthSection) {
+                if (userId && username) {
+                    desktopAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
+                } else {
+                    desktopAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
+                }
+            }
+            // ถ้ามี mobileAuthSection ให้ทำคล้ายๆ กัน
+        }
+    });
+</script>
