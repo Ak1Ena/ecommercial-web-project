@@ -1,0 +1,27 @@
+router.post('/add', (req, res) => {
+  const { name, price, discount, quantity, category, img } = req.body;
+
+  if (!name || !price || !quantity || !category) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  const sql = `INSERT INTO products (name, price, discount, quantity, category, img)
+               VALUES (?, ?, ?, ?, ?, ?)`;
+  const params = [
+    name,
+    parseFloat(price),
+    parseFloat(discount) || 0,
+    parseInt(quantity),
+    category,
+    img || ''
+  ];
+
+  db.run(sql, params, function(err) {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    console.log(`✅ Product added with ID ${this.lastID}`);
+    res.status(201).json({ id: this.lastID });
+  });
+});
