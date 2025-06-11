@@ -161,7 +161,7 @@ router.get('/category/:category', (req, res) => {
 router.get('/search', (req, res) => {
     const search = req.query.search || '';
     const sql = `SELECT * FROM products WHERE LOWER(name) LIKE LOWER(?)`;
-    const searchPattern = `%${search}%`;
+    const searchPattern = `${search}`;
 
     db.all(sql, [searchPattern], (err, rows) => {
         if (err) {
