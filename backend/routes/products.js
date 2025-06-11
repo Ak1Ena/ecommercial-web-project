@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sqlite3 = require('sqlite3').verbose();
-const path = require('path')
+const path = require('path');
 const db = new sqlite3.Database('../data/products.db');
 const axios = require('axios');
 
@@ -50,7 +50,6 @@ router.post('/quantity', (req, res) => {
         const currentQuantity = row.quantity || 0;
         const newQuantity = currentQuantity - quantity;
 
-        // อัปเดตจำนวนสินค้า
         const updateSql = `UPDATE products SET quantity = ? WHERE id = ?`;
         db.run(updateSql, [newQuantity, id], function(err) {
             if (err) {
@@ -142,10 +141,27 @@ router.get('/get', (req, res) => {
     });
 });
 
+
+router.get('/category/:category', (req, res) => {
+    const category = req.params.category;
+    console.log(`Get products by category: ${category}`);
+
+    const sql = 'SELECT * FROM products WHERE category = ?';
+    
+    db.all(sql, [category], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        console.log(`Found ${rows.length} products in category "${category}"`);
+        res.json(rows);
+    });
+});
+
 router.get('/search', (req, res) => {
     const search = req.query.search || '';
     const sql = `SELECT * FROM products WHERE LOWER(name) LIKE LOWER(?)`;
-    const searchPattern = `${search}`; 
+    const searchPattern = `%${search}%`;
 
     db.all(sql, [searchPattern], (err, rows) => {
         if (err) {
