@@ -53,8 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     --------------------*/
     $('.set-bg').each(function () {
         var bg = $(this).data('setbg');
-        // bg = bg.replace(/\\/g, '/');
-        $(this).css('background-image', 'url(' + bg + ')');
+        $(this).css('background-image', 'url(' +bg+')');
     });
 
     //Humberger Menu

@@ -7,10 +7,10 @@ fetch('http://localhost:4000/api/products/get')
         let productItem = document.createElement('div');
         productItem.className = `col-lg-3 col-md-4 col-sm-6 `;
         productItem.classList.add('mix', product.category); 
-        const imgUrl = product.img.replace(/'/g, "\\'"); // Escape single quotes for inline style
+        const imgUrl = product.img.replace(/\\/g, '/');  // Replace all backslashes with forward slashes
         productItem.innerHTML = `
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="${imgUrl} style: background-image: url('${imgUrl}');">
+                        <div class="featured__item__pic set-bg" data-setbg="${imgUrl}" style="background-image: url('${imgUrl}');">
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>
