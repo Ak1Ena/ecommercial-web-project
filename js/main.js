@@ -8,15 +8,19 @@
 ---------------------------------------------------------  */
 
 'use strict';
-
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded');
+    console.log('jQuery version:', $.fn.jquery);
+    console.log('MixItUp available:', typeof mixitup !== 'undefined');
+});
 (function ($) {
-
+    let mixer = null;
     /*------------------
         Preloader
     --------------------*/
     $(window).on('load', function () {
         $(".loader").fadeOut();
-        $("#preloder").delay(200).fadeOut("slow");
+        $("#preloder").delay(100).fadeOut("slow");
 
         /*------------------
             Gallery filter
@@ -27,7 +31,20 @@
         });
         if ($('.featured__filter').length > 0) {
             var containerEl = document.querySelector('.featured__filter');
-            var mixer = mixitup(containerEl);
+            mixer = mixitup(containerEl,{
+                selectors: {
+                    target: '.mix'
+                },
+                animation: {
+                    duration: 300
+                }
+            });
+        }
+    });
+    
+    window.mixer = mixitup('.featured__filter', {
+        selectors: {
+            target: '.mix'
         }
     });
 
@@ -36,6 +53,7 @@
     --------------------*/
     $('.set-bg').each(function () {
         var bg = $(this).data('setbg');
+        // bg = bg.replace(/\\/g, '/');
         $(this).css('background-image', 'url(' + bg + ')');
     });
 
