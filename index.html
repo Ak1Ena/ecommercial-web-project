@@ -479,8 +479,35 @@
                     <div class="latest-product__text">
                         <h4>Latest Products</h4>
                         <div class="latest-product__slider owl-carousel">
-                            <div class="latest-prdouct__slider__item" id="latest-products-container">
-                                </div>
+                            <div class="latest-prdouct__slider__item">
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="img/latest-product/lp-1.jpg" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Crab Pool Security</h6>
+                                        <span>$30.00</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="img/latest-product/lp-2.jpg" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Crab Pool Security</h6>
+                                        <span>$30.00</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="img/latest-product/lp-3.jpg" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Crab Pool Security</h6>
+                                        <span>$30.00</span>
+                                    </div>
+                                </a>
+                            </div>
                             <div class="latest-prdouct__slider__item">
                                 <a href="#" class="latest-product__item">
                                     <div class="latest-product__item__pic">
@@ -787,37 +814,39 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('http://localhost:3000/api/products') 
-                .then(response => response.json())
-                .then(data => {
-                    const productsContainer = document.getElementById('latest-products-container');
-                    productsContainer.innerHTML = ''; 
-                    data.forEach(product => {
-                        const productLink = document.createElement('a');
-                        productLink.href = "#"; // กำหนดลิงก์สินค้า
-                        productLink.className = 'latest-product__item';
-                        productLink.innerHTML = `
-                            <div class="latest-product__item__pic">
-                                <img src="${product.image}" alt="${product.name}">
-                            </div>
-                            <div class="latest-product__item__text">
-                                <h6>${product.name}</h6>
-                                <span>$${product.price ? product.price.toFixed(2) : 'N/A'}</span>
-                            </div>
-                        `;
-                        productsContainer.appendChild(productLink);
-                    });
-    
-                })
-                .catch(error => {
-                    console.error('Error fetching product data:', error);
-                    // Optionally display a message to the user if data fetching fails
-                    const productsContainer = document.getElementById('latest-products-container');
-                    productsContainer.innerHTML = '<p>ไม่สามารถโหลดข้อมูลสินค้าได้ในขณะนี้ โปรดลองใหม่อีกครั้ง.</p>';
-                });
-        });
-    </script>
+        fetch('http://localhost:4000/api/products/get')
+          .then(response => response.json())
+          .then(data => {
+            const featuredFilter = document.querySelector('.featured_filter');
+        
+            data.forEach(product => {
+              const productElement = document.createElement('div');
+              productElement.className = `col-lg-3 col-md-4 col-sm-6 mix ${product.category}`;
+        
+              productElement.innerHTML = `
+                <div class="featured__item">
+                  <div class="featured__item__pic set-bg" data-setbg="${product.img}" style="background-image: url('${product.img}');">
+                    <ul class="featured__item__pic__hover">
+                      <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                      <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                      <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                    </ul>
+                  </div>
+                  <div class="featured__item__text">
+                    <h6><a href="#">${product.name}</a></h6>
+                    <h5>$${product.price}</h5>
+                  </div>
+                </div>
+              `;
+        
+              featuredFilter.appendChild(productElement);
+            });
+          })
+          .catch(error => {
+            console.error('Error fetching products:', error);
+          });
+        </script>
+        
 
 </body>
 
