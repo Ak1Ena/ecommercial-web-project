@@ -38,7 +38,7 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span id="cartItemCount">0</span></a></li>
             </ul>
             <div class="header__cart__price">item: <span>$150.00</span></div>
         </div>
@@ -155,7 +155,7 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span id="cartItemCount">0</span></a></li>
                         </ul>
                         <div class="header__cart__price">item: <span>$150.00</span></div>
                     </div>
@@ -773,66 +773,64 @@
     <script src="js/main.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const loggedInUserId = localStorage.getItem('loggedInUserId');
-            
-            const desktopAuthSection = document.getElementById('desktopAuthSection');
-            const mobileAuthSection = document.getElementById('mobileAuthSection');
+    document.addEventListener('DOMContentLoaded', function() {
+        const loggedInUserId = localStorage.getItem('loggedInUserId');
 
-            if (loggedInUserId) {
-                // ถ้ามี userId, ดึงข้อมูล user จาก Backend
-                fetch(`http://localhost:3000/api/profile/${loggedInUserId}`)
-                    .then(response => {
-                        if (!response.ok) { 
-                            console.error('Error fetching user profile: Status', response.status);
-                            localStorage.removeItem('loggedInUserId');
-                            updateAuthSection(null, null); // อัปเดตทั้ง desktop และ mobile
-                            alert('Session หมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง'); 
-                            window.location.href = "login.html"; 
-                            throw new Error('User not found or session expired. Status: ' + response.status);
-                        }
-                        return response.json();
-                    })
-                    .then(user => {
-                        if (user && user.username) {
-                            updateAuthSection(user.id, user.username);
-                            // ส่วนที่เคยเพิ่มปุ่ม Logout ถูกลบออกแล้ว
-                        } else {
-                            console.warn("User data retrieved but username is missing.");
-                            localStorage.removeItem('loggedInUserId');
-                            updateAuthSection(null, null);
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error fetching user profile for header:", error);
-                        localStorage.removeItem('loggedInUserId'); 
+        const desktopAuthSection = document.getElementById('desktopAuthSection');
+        const mobileAuthSection = document.getElementById('mobileAuthSection');
+
+        if (loggedInUserId) {
+            // *** แก้ไขตรงนี้: เปลี่ยน URL API เป็น /api/users/:userId ***
+            fetch(`http://localhost:3000/api/users/${loggedInUserId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        console.error('Error fetching user profile: Status', response.status);
+                        localStorage.removeItem('loggedInUserId');
+                        updateAuthSection(null, null); // อัปเดตทั้ง desktop และ mobile
+                        alert('Session expired. Please log in again.');
+                        window.location.href = "login.html";
+                        throw new Error('User not found or session expired. Status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    if (user && user.username) {
+                        updateAuthSection(user.id, user.username);
+                    } else {
+                        console.warn("User data retrieved but username is missing.");
+                        localStorage.removeItem('loggedInUserId');
                         updateAuthSection(null, null);
-                    });
-            } else {
-                updateAuthSection(null, null);
-            }
-
-            // ฟังก์ชัน handleLogout() ถูกลบออกแล้ว
-
-            function updateAuthSection(userId, username) {
-                if (desktopAuthSection) {
-                    if (userId && username) {
-                        desktopAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
-                    } else {
-                        desktopAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
                     }
-                }
+                })
+                .catch(error => {
+                    console.error("Error fetching user profile for header:", error);
+                    localStorage.removeItem('loggedInUserId');
+                    updateAuthSection(null, null);
+                });
+        } else {
+            updateAuthSection(null, null);
+        }
 
-                if (mobileAuthSection) {
-                    if (userId && username) {
-                        mobileAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
-                    } else {
-                        mobileAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
-                    }
+        function updateAuthSection(userId, username) {
+            if (desktopAuthSection) {
+                if (userId && username) {
+                    desktopAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
+                } else {
+                    desktopAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
                 }
             }
-        });
-    </script>
+
+            if (mobileAuthSection) {
+                if (userId && username) {
+                    mobileAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
+                } else {
+                    mobileAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
+                }
+            }
+        }
+        
+    });
+</script>
 </body>
 
 </html>

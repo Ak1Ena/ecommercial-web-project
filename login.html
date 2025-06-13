@@ -145,58 +145,56 @@
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
         e.preventDefault();
 
-        const username = document.getElementById("username").value.trim(); // username หรือ email
+        // ดึงค่า username จาก input field ที่มี id="username"
+        const username = document.getElementById("username").value.trim();
         const password = document.getElementById("password").value;
 
         if (!username || !password) {
-            alert("Please enter both username/email and password.");
+            alert("Please enter your username/email and password.");
             return;
         }
 
         try {
-            const response = await fetch('http://localhost:3000/api/login', {
+            // *** แก้ไขตรงนี้: เปลี่ยน URL API เป็น /api/auth/login ***
+            const response = await fetch('http://localhost:3000/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ username: username, password: password }),
             });
 
             const data = await response.json(); // อ่าน response จาก Backend
 
             if (response.ok) { // ถ้า status code เป็น 2xx (สำเร็จ)
                 alert(data.message); // แสดง alert
-                // เก็บ userId ที่ Backend ส่งมา เพื่อระบุผู้ใช้ที่ login อยู่
+                // เก็บ userId ที่ Backend ส่งมา เพื่อระบุผู้ใช้ที่ Login อยู่
                 localStorage.setItem("loggedInUserId", data.userId);
                 
-                // ใช้ setTimeout เพื่อให้เบราว์เซอร์มีเวลาประมวลผลการปิด alert ก่อนเปลี่ยนหน้า
                 setTimeout(() => {
-                    // เปลี่ยนไปหน้า dashboard.html ตามที่คุณต้องการ
-                    window.location.href = "index.html"; // <--- แก้ไขตรงนี้
-                    // หรือถ้าคุณต้องการไป index.html เหมือนโค้ดเดิม ให้ใช้:
-                    // window.location.href = "index.html"; 
+                    window.location.href = "index.html"; 
                 }, 0); 
             } else { // ถ้ามี error จาก Backend (เช่น 401, 500)
-                alert("Login failed: " + data.message);
+                alert("Login failed : " + data.message);
             }
         } catch (error) {
-            console.error('Error during login fetch:', error);
-            alert("An error occurred during login. Please try again.");
+            console.error('An error occurred during the connection. Login:', error);
+            alert("An error occurred while logging in. Please try again.");
         }
     });
 
-    // JavaScript สำหรับ Header Top Bar (เหมือนใน register.html และ index.html)
-    // เพื่อแสดงชื่อผู้ใช้หรือปุ่ม Login ตามสถานะ
     document.addEventListener('DOMContentLoaded', function() {
         const loggedInUserId = localStorage.getItem('loggedInUserId');
         
         if (loggedInUserId) {
             // ถ้ามี userId, ดึงข้อมูล user จาก Backend
-            fetch(`http://localhost:3000/api/profile/${loggedInUserId}`)
+            fetch(`http://localhost:3000/api/users/${loggedInUserId}`)
                 .then(response => {
                     if (!response.ok) { // ตรวจสอบว่า response เป็น ok (200-299)
-                        // ถ้าไม่ ok อาจจะเกิดจาก user ไม่พบ (404) หรือเซสชันหมดอายุ
-                        throw new Error('User not found or session expired. Status: ' + response.status);
+                        console.error('There was an error retrieving user profile data: Status', response.status); // เปลี่ยนข้อความเป็นภาษาไทย
+                        localStorage.removeItem('loggedInUserId'); // ลบค่าที่ผิดพลาด/หมดอายุ
+                        updateAuthSection(null, null); // อัปเดต UI ให้เป็น Login
+                        throw new Error('User not found or session expired. Status: ' + response.status); // เปลี่ยนข้อความเป็นภาษาไทย
                     }
                     return response.json();
                 })
@@ -204,13 +202,13 @@
                     if (user && user.username) {
                         updateAuthSection(user.id, user.username);
                     } else {
-                        // ถ้าดึงข้อมูลไม่ได้ (user not found), ถือว่ายังไม่ login
-                        localStorage.removeItem('loggedInUserId'); // ลบค่าที่ผิดพลาด/หมดอายุ
+                        console.warn("User information was retrieved but username was not found."); // เปลี่ยนข้อความเป็นภาษาไทย
+                        localStorage.removeItem('loggedInUserId');
                         updateAuthSection(null, null);
                     }
                 })
                 .catch(error => {
-                    console.error("Error fetching user profile for header:", error);
+                    console.error("There was an error retrieving user profile data for Header:", error); // เปลี่ยนข้อความเป็นภาษาไทย
                     localStorage.removeItem('loggedInUserId'); // ลบค่าที่อาจหมดอายุหรือผิดพลาด
                     updateAuthSection(null, null);
                 });
@@ -230,7 +228,10 @@
                     desktopAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
                 }
             }
-            // ถ้ามี mobileAuthSection ให้ทำคล้ายๆ กัน
         }
     });
-</script>
+    </script>
+
+</body>
+
+</html>

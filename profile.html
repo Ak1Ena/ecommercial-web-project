@@ -178,73 +178,70 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async function() { // เพิ่ม async
-            const loggedInUserId = localStorage.getItem('loggedInUserId');
+    document.addEventListener('DOMContentLoaded', async function() {
+    const loggedInUserId = localStorage.getItem('loggedInUserId');
+    const profileDetailsDiv = document.getElementById('userInfo'); 
 
-            // Function สำหรับอัปเดตส่วน Auth ใน Header
-            function updateAuthSection(userId, username) {
-                const desktopAuthSection = document.querySelector('.header__top__right__auth');
-                // const mobileAuthSection = document.getElementById('mobileAuthSection'); // หากมี Mobile Section
+    if (!loggedInUserId) {
+        alert('You are not logged in yet. Please log in first.');
+        window.location.href = 'login.html';
+        return;
+    }
 
-                if (desktopAuthSection) {
-                    if (userId && username) {
-                        desktopAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
-                    } else {
-                        desktopAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
-                    }
-                }
-                // เพิ่มส่วนสำหรับ mobileAuthSection ถ้ามี
-                // if (mobileAuthSection) { ... }
-            }
+    try {
+        const response = await fetch(`http://localhost:3000/api/users/${loggedInUserId}`);
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+            console.error('Failed to fetch profile:', response.status, errorData);
+            profileDetailsDiv.innerHTML = `<p style="color: red;">Unable to load profile data: ${errorData.message || 'Unknown error'}.</p>`;
+            alert("An error occurred while loading your profile. Please try logging in again.");
+            localStorage.removeItem('loggedInUserId');
+            window.location.href = 'login.html';
+            return;
+        }
 
-            // --- Logic สำหรับ Profile Page ---
-            if (!loggedInUserId) {
-                alert("Please log in to view your profile.");
-                window.location.href = "login.html"; // Redirect ไปหน้า Login
-                updateAuthSection(null, null); // อัปเดต Header เป็น Login
-                return; // หยุดการทำงานของ script ที่เหลือ
-            }
+        const user = await response.json();
+        
+        if (user) {
+            document.getElementById('greetingMessage').textContent = `Hi! ${user.username}`;
+            document.getElementById('displayFirstName').textContent = user.firstName;
+            document.getElementById('displayLastName').textContent = user.lastName;
+            document.getElementById('displayUsername').textContent = user.username;
+            document.getElementById('displayEmail').textContent = user.email;
+            document.getElementById('displayPhone').textContent = user.phone;
+            document.getElementById('displayAddress').textContent = user.address;
+            
 
-            try {
-                // ดึงข้อมูลผู้ใช้จาก Backend API
-                const response = await fetch(`http://localhost:3000/api/profile/${loggedInUserId}`);
-                const user = await response.json(); // อ่าน response จาก Backend
+        } else {
+            profileDetailsDiv.innerHTML = `<p style="color: red;">Profile information not found for this user.</p>`;
+            alert("Profile information not found for this user. Please try logging in again.");
+            localStorage.removeItem('loggedInUserId');
+            window.location.href = 'login.html';
+        }
 
-                if (response.ok) { // ถ้า status code เป็น 2xx (สำเร็จ)
-                    // แสดงข้อมูลผู้ใช้
-                    document.getElementById('greetingMessage').textContent = `Hi ! ${user.username || 'Guest'}`;
-                    document.getElementById('displayFirstName').textContent = user.firstName || 'N/A';
-                    document.getElementById('displayLastName').textContent = user.lastName || 'N/A';
-                    document.getElementById('displayUsername').textContent = user.username || 'N/A';
-                    document.getElementById('displayEmail').textContent = user.email || 'N/A';
-                    document.getElementById('displayPhone').textContent = user.phone || 'N/A';
-                    document.getElementById('displayAddress').textContent = user.address || 'N/A';
+    } catch (error) {
+        console.error('Error fetching user profile:', error);
+        profileDetailsDiv.innerHTML = `<p style="color: red;">An error occurred while loading your profile: ${error.message}.</p>`;
+        alert("An error occurred while loading your profile. Please try logging in again.");
+        localStorage.removeItem('loggedInUserId');
+        window.location.href = 'login.html';
+    }
 
-                    // อัปเดต Header Top Bar ด้วยข้อมูลที่ดึงมา
-                    updateAuthSection(user.id, user.username);
-                } else {
-                    // กรณี Backend แจ้งว่าไม่พบผู้ใช้หรือมีข้อผิดพลาดอื่นๆ
-                    alert("Error loading profile data: " + (user.message || "User not found."));
-                    localStorage.removeItem('loggedInUserId'); // ลบสถานะ Login ที่ไม่ถูกต้อง
-                    window.location.href = "login.html"; // Redirect ไปหน้า Login
-                    updateAuthSection(null, null); // อัปเดต Header เป็น Login
-                }
-            } catch (error) {
-                console.error("Error fetching user profile:", error);
-                alert("An error occurred while loading your profile. Please try logging in again.");
-                localStorage.removeItem('loggedInUserId'); // ลบสถานะ Login หากเกิดข้อผิดพลาดเครือข่าย
-                window.location.href = "login.html"; // Redirect ไปหน้า Login
-                updateAuthSection(null, null); // อัปเดต Header เป็น Login
-            }
+    // --- เพิ่มฟังก์ชัน Logout ตรงนี้ ---
+        function handleLogout() {
+            localStorage.removeItem('loggedInUserId'); // ลบ userId ออกจาก Local Storage
+            alert('Logged out'); // แจ้งผู้ใช้ว่าออกจากระบบแล้ว
+            window.location.href = 'index.html'; // Redirect ไปหน้า index.html
+        }
 
-            // เหตุการณ์เมื่อคลิกปุ่ม Logout
-            document.getElementById('logoutButton').addEventListener('click', function() {
-                localStorage.removeItem('loggedInUserId'); // ลบสถานะ Login
-                alert("You have been logged out.");
-                window.location.href = "index.html"; // กลับไปหน้าหลัก
-            });
-        });
+        const logoutButton = document.getElementById('logoutButton'); // สมมติว่ามีปุ่ม ID นี้ใน profile.html
+        if (logoutButton) {
+            logoutButton.addEventListener('click', handleLogout);
+        }
+
+        
+});
     </script>
 </body>
-
 </html>

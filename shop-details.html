@@ -52,7 +52,7 @@
                     <li><a href="#">English</a></li>
                 </ul>
             </div>
-            <div class="header__top__right__auth">
+            <div class="header__top__right__auth" id="mobileAuthSection">
                 <a href="./login.html"><i class="fa fa-user"></i> Login</a>
             </div>
         </div>
@@ -118,7 +118,7 @@
                                     <li><a href="#">English</a></li>
                                 </ul>
                             </div>
-                            <div class="header__top__right__auth">
+                            <div class="header__top__right__auth" id="desktopAuthSection">
                                 <a href="./login.html"><i class="fa fa-user"></i> Login</a>
                             </div>
                         </div>
@@ -540,7 +540,64 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loggedInUserId = localStorage.getItem('loggedInUserId');
 
+        const desktopAuthSection = document.getElementById('desktopAuthSection');
+        const mobileAuthSection = document.getElementById('mobileAuthSection');
+
+        if (loggedInUserId) {
+            // *** แก้ไขตรงนี้: เปลี่ยน URL API เป็น /api/users/:userId ***
+            fetch(`http://localhost:3000/api/users/${loggedInUserId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        console.error('Error fetching user profile: Status', response.status);
+                        localStorage.removeItem('loggedInUserId');
+                        updateAuthSection(null, null); // อัปเดตทั้ง desktop และ mobile
+                        alert('Session expired. Please log in again.');
+                        window.location.href = "login.html";
+                        throw new Error('User not found or session expired. Status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    if (user && user.username) {
+                        updateAuthSection(user.id, user.username);
+                    } else {
+                        console.warn("User data retrieved but username is missing.");
+                        localStorage.removeItem('loggedInUserId');
+                        updateAuthSection(null, null);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching user profile for header:", error);
+                    localStorage.removeItem('loggedInUserId');
+                    updateAuthSection(null, null);
+                });
+        } else {
+            updateAuthSection(null, null);
+        }
+
+        function updateAuthSection(userId, username) {
+            if (desktopAuthSection) {
+                if (userId && username) {
+                    desktopAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
+                } else {
+                    desktopAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
+                }
+            }
+
+            if (mobileAuthSection) {
+                if (userId && username) {
+                    mobileAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
+                } else {
+                    mobileAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
+                }
+            }
+        }
+    });
+</script>
 </body>
 
 </html>

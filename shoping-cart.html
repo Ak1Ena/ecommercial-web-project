@@ -38,7 +38,7 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span id="cartItemCount">0</span></a></li>
             </ul>
             <div class="header__cart__price">item: <span>$150.00</span></div>
         </div>
@@ -52,7 +52,7 @@
                     <li><a href="#">English</a></li>
                 </ul>
             </div>
-            <div class="header__top__right__auth">
+            <div class="header__top__right__auth" id="mobileAuthSection">
                 <a href="./login.html"><i class="fa fa-user"></i> Login</a>
             </div>
         </div>
@@ -118,9 +118,9 @@
                                     <li><a href="#">English</a></li>
                                 </ul>
                             </div>
-                            <div class="header__top__right__auth">
+                            <div class="header__top__right__auth" id="desktopAuthSection">
                                 <a href="./login.html"><i class="fa fa-user"></i> Login</a>
-                            </div>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -155,7 +155,7 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
                         </ul>
                         <div class="header__cart__price">item: <span>$150.00</span></div>
                     </div>
@@ -439,7 +439,163 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
+    <!-- header แสดงชื่อ user -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loggedInUserId = localStorage.getItem('loggedInUserId');
+        
+        const desktopAuthSection = document.getElementById('desktopAuthSection');
+        const mobileAuthSection = document.getElementById('mobileAuthSection');
 
-</body>
+        // --- ฟังก์ชันช่วยเหลือสำหรับจัดการ UI ของ Header ---
+        function updateAuthSection(userId, username) {
+            if (desktopAuthSection) {
+                if (userId && username) {
+                    desktopAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
+                } else {
+                    desktopAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
+                }
+            }
+            if (mobileAuthSection) {
+                if (userId && username) {
+                    mobileAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
+                } else {
+                    mobileAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
+                }
+            }
+        }
 
-</html>
+        // --- ฟังก์ชัน Logout (ต้องมีในโค้ดถ้าคุณมีปุ่ม Logout ในหน้าใดๆ) ---
+        function handleLogout() {
+            localStorage.removeItem('loggedInUserId');
+            alert('ออกจากระบบแล้ว');
+            window.location.href = 'index.html'; // ไปหน้าหลัก
+        }
+
+        if (loggedInUserId) {
+            fetch(`http://localhost:3000/api/users/${loggedInUserId}`)
+                .then(response => {
+                    if (!response.ok) { 
+                        console.error('Header Auth Error: User session invalid or not found. Status:', response.status);
+                        localStorage.removeItem('loggedInUserId');
+                        updateAuthSection(null, null);
+                        alert('Session expired. Please log in again.'); 
+                        window.location.href = "login.html"; 
+                        throw new Error('User not found or session expired. Status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    if (user && user.username) {
+                        updateAuthSection(user.id, user.username);
+                    } else {
+                        console.warn("User data retrieved but username is missing. Clearing session.");
+                        localStorage.removeItem('loggedInUserId');
+                        updateAuthSection(null, null);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching user profile for header:", error);
+                    localStorage.removeItem('loggedInUserId'); 
+                    updateAuthSection(null, null); 
+                });
+        } else {
+            updateAuthSection(null, null);
+        }
+
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', handleLogout);
+        }
+
+        // --- โค้ดสำหรับหน้า Shopping Cart (ใน shopping-cart.html เท่านั้น) ---
+        if (window.location.pathname.includes('shopping-cart.html')) {
+            const cartItemsContainer = document.getElementById('cartItems'); // ต้องมี Element นี้ใน shopping-cart.html
+            if (!cartItemsContainer) {
+                console.error("Cart Page Error: Element with ID 'cartItems' not found.");
+                return; // หยุดการทำงานถ้าหา Element ไม่เจอ
+            }
+
+            // ถ้ายังไม่ได้ Login ก็แสดงข้อความในตะกร้าสินค้า
+            if (!loggedInUserId) { 
+                cartItemsContainer.innerHTML = '<p style="color: grey; text-align: center; margin-top: 50px;">กรุณาเข้าสู่ระบบเพื่อดูสินค้าในตะกร้า</p>';
+                return; // หยุดการทำงานส่วนนี้
+            }
+
+            // ดึงข้อมูลตะกร้าสินค้า (เฉพาะเมื่อ Login แล้ว)
+            // *** API URL นี้ต้องตรงกับ Backend ของคุณ ***
+            fetch(`http://localhost:3000/api/cart/${loggedInUserId}`) 
+                .then(response => {
+                    if (!response.ok) {
+                        const errorData = response.json().catch(() => ({ message: 'Unknown error' }));
+                        console.error('Cart Page Fetch Error: Status', response.status, errorData);
+                        cartItemsContainer.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">ไม่สามารถโหลดตะกร้าสินค้าได้: ${errorData.message || 'Unknown error'}</p>`;
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(cart => {
+                    renderCart(cart); // เรียกฟังก์ชันแสดงผลตะกร้า
+                })
+                .catch(error => {
+                    console.error('Cart Page Critical Error:', error);
+                    cartItemsContainer.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">เกิดข้อผิดพลาดในการโหลดตะกร้าสินค้า.</p>`;
+                });
+
+            // *** ฟังก์ชัน renderCart() ต้องมีอยู่ใน shopping-cart.html ด้วย ***
+            function renderCart(cartData) {
+                if (!cartItemsContainer) return;
+
+                let cartHtml = '';
+                if (cartData && cartData.items && cartData.items.length > 0) {
+                    cartHtml += `
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="shoping__product">Products</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    cartData.items.forEach(item => {
+                        const productName = item.productName || 'N/A';
+                        const quantity = item.quantity || 0;
+                        const price = typeof item.price === 'number' ? item.price.toFixed(2) : '0.00';
+                        const total = (quantity * parseFloat(price)).toFixed(2);
+
+                        cartHtml += `
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    <h5>${productName}</h5>
+                                </td>
+                                <td class="shoping__cart__price">$${price}</td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="${quantity}">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">$${total}</td>
+                                <td class="shoping__cart__item__close">
+                                    <span class="icon_close"></span>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    cartHtml += `
+                            </tbody>
+                        </table>
+                    `;
+                } else {
+                    cartHtml = '<p style="text-align: center; margin-top: 50px;">ตะกร้าสินค้าของคุณว่างเปล่า</p>';
+                }
+                cartItemsContainer.innerHTML = cartHtml;
+            }
+        }
+    });
+</script>

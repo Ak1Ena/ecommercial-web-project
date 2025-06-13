@@ -164,7 +164,6 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
     <script>
     document.getElementById("registerForm").addEventListener("submit", async function (e) {
         e.preventDefault();
@@ -180,28 +179,28 @@
         // Client-side validation
         const usernameRegex = /^[a-zA-Z0-9]+$/;
         if (!usernameRegex.test(username)) {
-            alert("Username must be in English letters and numbers only.");
-            return; // หยุดการทำงานถ้า validation ไม่ผ่าน
+            alert("Username must contain only English letters and numbers.");
+            return;
         }
 
         if (!email.endsWith("@gmail.com")) {
             alert("Email must end with @gmail.com");
-            return; // หยุดการทำงานถ้า validation ไม่ผ่าน
+            return;
         }
 
         if (password.length < 8) {
-            alert("Password must be at least 8 characters.");
-            return; // หยุดการทำงานถ้า validation ไม่ผ่าน
+            alert("Password must be at least 8 characters long.");
+            return;
         }
 
         if (phone.length !== 10 || isNaN(phone)) {
-            alert("The phone number must be exactly 10 digits and contain only numbers.");
-            return; // หยุดการทำงานถ้า validation ไม่ผ่าน
+            alert("The phone number must be 10 digits long and contain only numbers.");
+            return;
         }
 
         // *** ส่วนนี้คือการส่งข้อมูลไปยัง Backend ***
         try {
-            const response = await fetch('http://localhost:3000/api/register', {
+            const response = await fetch('http://localhost:3000/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -220,20 +219,17 @@
             const data = await response.json(); // อ่าน response จาก Backend
 
             if (response.ok) { // ถ้า status code เป็น 2xx (สำเร็จ)
-                // แสดง alert แล้วค่อยเปลี่ยนหน้าหลังจากผู้ใช้กด OK
-                alert("ลงทะเบียนสำเร็จ: " + data.message);
+                alert("Registration completed: " + data.message);
                 
-                // ใช้ setTimeout เพื่อให้เบราว์เซอร์มีเวลาประมวลผลการปิด alert
-                // ค่า 0ms หมายถึงให้รันโค้ดทันทีที่ Call Stack ว่าง (หลังจาก alert ปิดไปแล้ว)
                 setTimeout(() => {
                     window.location.href = "login.html"; // เปลี่ยนไปหน้า login
                 }, 0); // หน่วงเวลา 0 มิลลิวินาที
             } else { // ถ้ามี error จาก Backend (เช่น 400, 409, 500)
-                console.error("Registration failed details:", data);
+                console.error("Registration details failed:", data);
                 alert("Registration failed: " + data.message);
             }
         } catch (error) {
-            console.error('Error during fetch:', error);
+            console.error('An error occurred during the connection:', error);
             alert("An error occurred during registration. Please try again.");
         }
     });
@@ -244,9 +240,12 @@
         let usernameToDisplay = null;
 
         if (loggedInUserId) {
-            fetch(`http://localhost:3000/api/profile/${loggedInUserId}`)
+            fetch(`http://localhost:3000/api/users/${loggedInUserId}`)
                 .then(response => {
                     if (!response.ok) {
+                        console.error('There was an error fetching user profile data for Header: Status.', response.status);
+                        localStorage.removeItem('loggedInUserId');
+                        updateAuthSection(null, null);
                         throw new Error('User not found or session expired');
                     }
                     return response.json();
@@ -261,7 +260,7 @@
                     }
                 })
                 .catch(error => {
-                    console.error("Error fetching user profile for header:", error);
+                    console.error("There was an error retrieving user profile data for Header:", error);
                     localStorage.removeItem('loggedInUserId');
                     updateAuthSection(null, null);
                 });
