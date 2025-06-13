@@ -8,19 +8,15 @@
 ---------------------------------------------------------  */
 
 'use strict';
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded');
-    console.log('jQuery version:', $.fn.jquery);
-    console.log('MixItUp available:', typeof mixitup !== 'undefined');
-});
+
 (function ($) {
-    let mixer = null;
+
     /*------------------
         Preloader
     --------------------*/
     $(window).on('load', function () {
         $(".loader").fadeOut();
-        $("#preloder").delay(100).fadeOut("slow");
+        $("#preloder").delay(200).fadeOut("slow");
 
         /*------------------
             Gallery filter
@@ -31,20 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         if ($('.featured__filter').length > 0) {
             var containerEl = document.querySelector('.featured__filter');
-            mixer = mixitup(containerEl,{
+            window.mixer = mixitup(containerEl,{
                 selectors: {
                     target: '.mix'
-                },
-                animation: {
-                    duration: 300
                 }
             });
-        }
-    });
-    
-    window.mixer = mixitup('.featured__filter', {
-        selectors: {
-            target: '.mix'
         }
     });
 
@@ -53,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     --------------------*/
     $('.set-bg').each(function () {
         var bg = $(this).data('setbg');
-        $(this).css('background-image', 'url(' +bg+')');
+        $(this).css('background-image', 'url(' + bg + ')');
     });
 
     //Humberger Menu
