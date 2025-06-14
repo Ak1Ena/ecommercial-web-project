@@ -17,6 +17,7 @@
     $(window).on('load', function () {
         $(".loader").fadeOut();
         $("#preloder").delay(200).fadeOut("slow");
+        let mixer;
 
         /*------------------
             Gallery filter
@@ -228,7 +229,7 @@
 })(jQuery);
 
 document.getElementById('search-btn').addEventListener('click', function() {
-    const searchInput = document.getElementById('search').value.trim();
+    const searchInput = document.getElementById('search-input').value.trim();
     console.log('Search button clicked');
     if (searchInput === '') {
         alert('Please enter a search term.');

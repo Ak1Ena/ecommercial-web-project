@@ -1,4 +1,4 @@
-const searchButton = document.getElementById('search-button');
+const searchButton = document.getElementById('search-btn');
 searchButton.addEventListener('click', function() {
     const searchInput = document.getElementById('search-input').value.trim();
     searchProducts(searchInput);

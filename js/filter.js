@@ -1,5 +1,6 @@
 const productList = document.getElementById('filter_row');
 
+
 fetch('http://localhost:4000/api/products/get')
 .then(response => response.json())
 .then(data => {
@@ -17,10 +18,19 @@ fetch('http://localhost:4000/api/products/get')
                                 <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
-                        <div class="featured__item__text">
+                        ${product.discount > 0
+                            ?`<div class="product__discount__item__text">
+                                    <span>${product.category}</span>
+                                    <h5><a href="#">${product.name}</a></h5>
+                                    <div class="product__item__price">$${(product.price * (1 - product.discount / 100)).toFixed(2)} <span>$${product.price}</span></div>
+                                </div>`
+                            
+                            :`<div class="featured__item__text">
                             <h6><a href="#">${product.name}</a></h6>
-                            <h5>$${product.price}</h5>
-                        </div>
+                            <h5>$${(product.price * (1 - product.discount / 100)).toFixed(2)}</h5>
+                            </div>`
+                            }
+                        
                     </div>
         `;
         productList.appendChild(productItem);
