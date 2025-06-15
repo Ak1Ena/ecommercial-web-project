@@ -9,10 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ogani | Template</title>
 
-    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
-    <!-- Css Styles -->
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
@@ -24,12 +22,10 @@
 </head>
 
 <body>
-    <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
 
-    <!-- Humberger Begin -->
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
@@ -38,9 +34,9 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span id="mobile-cart-count">0</span></a></li>
             </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
+            <div class="header__cart__price">item: <span id="mobile-cart-total">$0.00</span></div>
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
@@ -53,8 +49,8 @@
                 </ul>
             </div>
             <div class="header__top__right__auth" id="mobileAuthSection">
-             <a href="./login.html"><i class="fa fa-user"></i> Login</a> 
-             </div>
+                <a href="./login.html"><i class="fa fa-user"></i> Login</a>
+            </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
@@ -63,7 +59,7 @@
                 <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">Shop Details</a></li>
-                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                        <li><a href="./shopping-cart.html">Shopping Cart</a></li>
                         <li><a href="./checkout.html">Check Out</a></li>
                         <li><a href="./blog-details.html">Blog Details</a></li>
                     </ul>
@@ -73,12 +69,6 @@
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
-        <div class="header__top__right__social">
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-linkedin"></i></a>
-            <a href="#"><i class="fa fa-pinterest-p"></i></a>
-        </div>
         <div class="humberger__menu__contact">
             <ul>
                 <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
@@ -86,14 +76,11 @@
             </ul>
         </div>
     </div>
-    <!-- Humberger End -->
-
-    <!-- Header Section Begin -->
     <header class="header">
         <div class="header__top">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-md-6">
                         <div class="header__top__left">
                             <ul>
                                 <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
@@ -101,14 +88,8 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-md-6">
                         <div class="header__top__right">
-                            <div class="header__top__right__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                            </div>
                             <div class="header__top__right__language">
                                 <img src="img/language.png" alt="">
                                 <div>English</div>
@@ -118,9 +99,9 @@
                                     <li><a href="#">English</a></li>
                                 </ul>
                             </div>
-                            <div class="humberger__menu__widget__item" id="desktopAuthSection">
-                             <a href="./login.html"><i class="fa fa-user"></i> Login</a>
-                             </div>
+                            <div class="header__top__right__auth" id="desktopAuthSection">
+                                <a href="./login.html"><i class="fa fa-user"></i> Login</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -141,10 +122,10 @@
                             <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                                    <li><a href="./shopping-cart.html">Shopping Cart</a></li>
                                     <li><a href="./checkout.html">Check Out</a></li>
                                     <li><a href="./blog-details.html">Blog Details</a></li>
-                                </ul>
+                                    </ul>
                             </li>
                             <li><a href="./blog.html">Blog</a></li>
                             <li><a href="./contact.html">Contact</a></li>
@@ -155,9 +136,9 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span id="des">0</span></a></li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
+                        <div class="header__cart__price">item: <span id="desktop-cart-total">$0.00</span></div>
                     </div>
                 </div>
             </div>
@@ -166,9 +147,6 @@
             </div>
         </div>
     </header>
-    <!-- Header Section End -->
-
-    <!-- Hero Section Begin -->
     <section class="hero hero-normal">
         <div class="container">
             <div class="row">
@@ -219,9 +197,6 @@
             </div>
         </div>
     </section>
-    <!-- Hero Section End -->
-
-    <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
         <div class="container">
             <div class="row">
@@ -237,9 +212,6 @@
             </div>
         </div>
     </section>
-    <!-- Breadcrumb Section End -->
-
-    <!-- Product Section Begin -->
     <section class="product spad">
         <div class="container">
             <div class="row">
@@ -430,7 +402,7 @@
                                         </div>
                                         <div class="product__discount__item__text">
                                             <span>Dried Fruit</span>
-                                            <h5><a href="#">Raisin’n’nuts</a></h5>
+                                            <h5><a href="#">Vegetables’ Package</a></h5>
                                             <div class="product__item__price">$30.00 <span>$36.00</span></div>
                                         </div>
                                     </div>
@@ -448,7 +420,7 @@
                                         </div>
                                         <div class="product__discount__item__text">
                                             <span>Vegetables</span>
-                                            <h5><a href="#">Vegetables’package</a></h5>
+                                            <h5><a href="#">Crab Pool Security</a></h5>
                                             <div class="product__item__price">$30.00 <span>$36.00</span></div>
                                         </div>
                                     </div>
@@ -466,7 +438,7 @@
                                         </div>
                                         <div class="product__discount__item__text">
                                             <span>Dried Fruit</span>
-                                            <h5><a href="#">Mixed Fruitss</a></h5>
+                                            <h5><a href="#">Crab Pool Security</a></h5>
                                             <div class="product__item__price">$30.00 <span>$36.00</span></div>
                                         </div>
                                     </div>
@@ -484,7 +456,7 @@
                                         </div>
                                         <div class="product__discount__item__text">
                                             <span>Dried Fruit</span>
-                                            <h5><a href="#">Raisin’n’nuts</a></h5>
+                                            <h5><a href="#">Crab Pool Security</a></h5>
                                             <div class="product__item__price">$30.00 <span>$36.00</span></div>
                                         </div>
                                     </div>
@@ -502,7 +474,7 @@
                                         </div>
                                         <div class="product__discount__item__text">
                                             <span>Dried Fruit</span>
-                                            <h5><a href="#">Raisin’n’nuts</a></h5>
+                                            <h5><a href="#">Crab Pool Security</a></h5>
                                             <div class="product__item__price">$30.00 <span>$36.00</span></div>
                                         </div>
                                     </div>
@@ -520,7 +492,7 @@
                                         </div>
                                         <div class="product__discount__item__text">
                                             <span>Dried Fruit</span>
-                                            <h5><a href="#">Raisin’n’nuts</a></h5>
+                                            <h5><a href="#">Crab Pool Security</a></h5>
                                             <div class="product__item__price">$30.00 <span>$36.00</span></div>
                                         </div>
                                     </div>
@@ -554,12 +526,12 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="1" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-1.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -569,12 +541,12 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="2" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-2.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -584,12 +556,12 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="3" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-3.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -599,12 +571,12 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="4" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-4.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-4.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -614,12 +586,12 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="5" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-5.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-5.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -629,12 +601,12 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="6" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-6.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-6.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -644,12 +616,12 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="7" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-7.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -659,12 +631,12 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="8" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-8.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-8.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -674,12 +646,12 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="9" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-9.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-9.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -689,12 +661,12 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="10" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-10.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-10.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -704,12 +676,12 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="11" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-11.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-11.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -719,12 +691,12 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
+                            <div class="product__item" data-product-id="12" data-product-name="Crab Pool Security" data-product-price="30.00" data-product-image="img/product/product-12.jpg">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-12.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="#" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -744,9 +716,6 @@
             </div>
         </div>
     </section>
-    <!-- Product Section End -->
-
-    <!-- Footer Section Begin -->
     <footer class="footer spad">
         <div class="container">
             <div class="row">
@@ -803,18 +772,14 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="footer__copyright">
-                        <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
+                        <div class="footer__copyright__text"><p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  </p></div>
                         <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
-    <!-- Footer Section End -->
-
-    <!-- Js Plugins -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.nice-select.min.js"></script>
@@ -825,63 +790,137 @@
     <script src="js/main.js"></script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const loggedInUserId = localStorage.getItem('loggedInUserId');
+        document.addEventListener('DOMContentLoaded', function() {
+            const loggedInUserId = localStorage.getItem('loggedInUserId');
+            const desktopAuthSection = document.getElementById('desktopAuthSection');
+            const mobileAuthSection = document.getElementById('mobileAuthSection');
+            const cartItemCountSpan = document.getElementById('cart-item-count');
+            const cartTotalPriceSpan = document.getElementById('cart-total-price');
 
-        const desktopAuthSection = document.getElementById('desktopAuthSection');
-        const mobileAuthSection = document.getElementById('mobileAuthSection');
+            // Function to update cart display in header
+            function updateCartDisplay() {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                let totalItems = 0;
+                let totalPrice = 0;
 
-        if (loggedInUserId) {
-            // *** แก้ไขตรงนี้: เปลี่ยน URL API เป็น /api/users/:userId ***
-            fetch(`http://localhost:3000/api/users/${loggedInUserId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        console.error('Error fetching user profile: Status', response.status);
-                        localStorage.removeItem('loggedInUserId');
-                        updateAuthSection(null, null); // อัปเดตทั้ง desktop และ mobile
-                        alert('Session expired. Please log in again.');
-                        window.location.href = "login.html";
-                        throw new Error('User not found or session expired. Status: ' + response.status);
-                    }
-                    return response.json();
-                })
-                .then(user => {
-                    if (user && user.username) {
-                        updateAuthSection(user.id, user.username);
-                    } else {
-                        console.warn("User data retrieved but username is missing.");
+                cart.forEach(item => {
+                    totalItems += item.quantity;
+                    totalPrice += item.quantity * item.price;
+                });
+
+                if (cartItemCountSpan) {
+                    cartItemCountSpan.textContent = totalItems;
+                }
+                if (cartTotalPriceSpan) {
+                    cartTotalPriceSpan.textContent = `$${totalPrice.toFixed(2)}`;
+                }
+            }
+
+            // Authentication check (existing code)
+            if (loggedInUserId) {
+                fetch(`http://localhost:3000/api/users/${loggedInUserId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error('Error fetching user profile: Status', response.status);
+                            localStorage.removeItem('loggedInUserId');
+                            updateAuthSection(null, null);
+                            alert('Session expired. Please log in again.');
+                            window.location.href = "login.html";
+                            throw new Error('User not found or session expired. Status: ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(user => {
+                        if (user && user.username) {
+                            updateAuthSection(user.id, user.username);
+                        } else {
+                            console.warn("User data retrieved but username is missing.");
+                            localStorage.removeItem('loggedInUserId');
+                            updateAuthSection(null, null);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching user profile for header:", error);
                         localStorage.removeItem('loggedInUserId');
                         updateAuthSection(null, null);
+                    });
+            } else {
+                updateAuthSection(null, null);
+            }
+
+            function updateAuthSection(userId, username) {
+                if (desktopAuthSection) {
+                    desktopAuthSection.innerHTML = userId && username ? `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>` : `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
+                }
+                if (mobileAuthSection) {
+                    mobileAuthSection.innerHTML = userId && username ? `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>` : `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
+                }
+            }
+
+            // Add to Cart functionality
+            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); 
+
+                    const productItem = this.closest('.product__item'); // Get the main product div
+
+                    // Retrieve product data from data-attributes
+                    const productId = parseInt(productItem.dataset.productId);
+                    const productName = productItem.dataset.productName;
+                    const productPrice = parseFloat(productItem.dataset.productPrice);
+                    const productImage = productItem.dataset.productImage;
+
+                    // Validate retrieved data
+                    if (isNaN(productId) || !productName || isNaN(productPrice) || !productImage) {
+                        console.error("Missing or invalid product data for item:", productItem);
+                        alert("Sorry! Could not add item to cart. Incomplete product data.");
+                        return;
                     }
-                })
-                .catch(error => {
-                    console.error("Error fetching user profile for header:", error);
-                    localStorage.removeItem('loggedInUserId');
-                    updateAuthSection(null, null);
+
+                    let cart = JSON.parse(localStorage.getItem('cart')) || []; // Get current cart
+
+                    const existingItemIndex = cart.findIndex(item => item.id === productId);
+
+                    if (existingItemIndex > -1) {
+                        // If item already exists, increment quantity
+                        cart[existingItemIndex].quantity += 1;
+                        alert(`"${productName}" is already in your cart. Quantity increased to ${cart[existingItemIndex].quantity}.`);
+                    } else {
+                        // If item is new, add it to the cart
+                        cart.push({
+                            id: productId,
+                            name: productName,
+                            price: productPrice,
+                            image: productImage,
+                            quantity: 1
+                        });
+                        alert(`"${productName}" has been added to your cart!`);
+                    }
+
+                    localStorage.setItem('cart', JSON.stringify(cart)); // Save updated cart
+                    updateCartDisplay(); // Update cart display in header
+
+                    console.log("Current Cart:", cart);
+                    console.log("Cart saved in LocalStorage!");
+
+                    updateHeaderCartInfo(cart); 
                 });
-        } else {
-            updateAuthSection(null, null);
-        }
+            });
 
-        function updateAuthSection(userId, username) {
-            if (desktopAuthSection) {
-                if (userId && username) {
-                    desktopAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
-                } else {
-                    desktopAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
+            // Function to log cart data from LocalStorage on page load (for debugging)
+            function viewLocalStorageCartOnLoad() {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                console.log("Cart data in LocalStorage on initial load:", cart);
+                if (cart.length === 0) {
+                    console.log("Local Storage: Cart is empty.");
                 }
             }
 
-            if (mobileAuthSection) {
-                if (userId && username) {
-                    mobileAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
-                } else {
-                    mobileAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
-                }
-            }
-        }
-    });
-</script>
+            viewLocalStorageCartOnLoad();
+            updateCartDisplay(); // Initial update of cart display on page load
+        });
+    </script>
 </body>
-
 </html>

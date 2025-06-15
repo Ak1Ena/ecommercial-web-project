@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+
 </head>
 
 <body>
@@ -38,9 +39,9 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span id="cartItemCount">0</span></a></li>
+                <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span id="mobile-cart-count">0</span></a></li>
             </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
+           <div class="header__cart__price">item: <span id="mobile-cart-total">$0.00</span></div>
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
@@ -155,9 +156,9 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+                            <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span id="desktop-cart-count">0</span></a></li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
+                        <div class="header__cart__price">item: <span id="desktop-cart-total">$0.00</span></div>
                     </div>
                 </div>
             </div>
@@ -255,74 +256,8 @@
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="img/cart/cart-1.jpg" alt="">
-                                        <h5>Vegetable’s Package</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        $55.00
-                                    </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="shoping__cart__total">
-                                        $110.00
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="img/cart/cart-2.jpg" alt="">
-                                        <h5>Fresh Garden Vegetable</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        $39.00
-                                    </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="shoping__cart__total">
-                                        $39.99
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="img/cart/cart-3.jpg" alt="">
-                                        <h5>Organic Bananas</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        $69.00
-                                    </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="shoping__cart__total">
-                                        $69.99
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="cart-items-container">
+                                </tbody>
                         </table>
                     </div>
                 </div>
@@ -330,9 +265,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
-                        <a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                            Upadate Cart</a>
+                        <a href="./shop-grid.html" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                        <a href="#" class="primary-btn cart-btn update-cart">UPDATE CART</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -350,10 +284,10 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span>$454.98</span></li>
-                            <li>Total <span>$454.98</span></li>
+                            <li>Subtotal <span id="cart-subtotal">$0.00</span></li>
+                            <li>Total <span id="cart-total">$0.00</span></li>
                         </ul>
-                        <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                        <a href="./checkout.html" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>
                 </div>
             </div>
@@ -442,45 +376,153 @@
     <!-- header แสดงชื่อ user -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+
+        // Function to update cart count and total in the header
+        function updateHeaderCartInfo(cart) {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Desktop Header
+            const desktopCartCount = document.getElementById('desktop-cart-count');
+            const desktopCartTotal = document.getElementById('desktop-cart-total');
+            // Mobile Header
+            const mobileCartCount = document.getElementById('mobile-cart-count');
+            const mobileCartTotal = document.getElementById('mobile-cart-total');
+
+            if (desktopCartCount) desktopCartCount.textContent = totalItems;
+            if (desktopCartTotal) desktopCartTotal.textContent = `$${totalPrice.toFixed(2)}`;
+            if (mobileCartCount) mobileCartCount.textContent = totalItems;
+            if (mobileCartTotal) mobileCartTotal.textContent = `$${totalPrice.toFixed(2)}`;
+        }
+
+        // Function to load cart items from LocalStorage and display them
+        function loadCartItems() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItemsContainer = document.getElementById('cart-items-container');
+            cartItemsContainer.innerHTML = ''; // Clear existing items
+
+            let subtotal = 0;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<tr><td colspan="5" class="text-center">Your cart is empty. <a href="shop-grid.html">Start shopping!</a></td></tr>';
+            } else {
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    subtotal += itemTotal;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="shoping__cart__item">
+                            <img src="${item.image}" alt="${item.name}">
+                            <h5>${item.name}</h5>
+                        </td>
+                        <td class="shoping__cart__price">
+                            $${item.price.toFixed(2)}
+                        </td>
+                        <td class="shoping__cart__quantity">
+                            <div class="quantity">
+                                <div class="pro-qty">
+                                    <span class="qtybtn dec" data-item-id="${item.id}">-</span>
+                                    <input type="text" value="${item.quantity}" data-item-id="${item.id}" readonly>
+                                    <span class="qtybtn inc" data-item-id="${item.id}">+</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="shoping__cart__total">
+                            $${itemTotal.toFixed(2)}
+                        </td>
+                        <td class="shoping__cart__item__close">
+                            <span class="icon_close" data-item-id="${item.id}"></span>
+                        </td>
+                    `;
+                    cartItemsContainer.appendChild(row);
+                });
+            }
+
+            // Update subtotal and total in the checkout section
+            document.getElementById('cart-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('cart-total').textContent = `$${subtotal.toFixed(2)}`; // Assuming total is same as subtotal for now
+
+            updateHeaderCartInfo(cart); // Update cart count and total in header
+        }
+
+        // Function to change item quantity
+        function changeQty(itemId, delta) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const itemIndex = cart.findIndex(item => item.id === itemId);
+
+            if (itemIndex > -1) {
+                cart[itemIndex].quantity += delta;
+                if (cart[itemIndex].quantity <= 0) {
+                    // If quantity is 0 or less, remove the item
+                    cart.splice(itemIndex, 1);
+                }
+                localStorage.setItem("cart", JSON.stringify(cart));
+                loadCartItems(); // Re-load cart to show updated state and totals
+            }
+        }
+
+        // Function to remove an item from the cart
+        function removeItem(itemId) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            // Filter out the item to be removed
+            cart = cart.filter(item => item.id !== itemId);
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCartItems(); // Re-load cart to reflect changes
+            // alert('Item removed from cart!'); // Optional: uncomment if you want a pop-up
+        }
+
+        // Event Listeners for quantity change and item removal using event delegation
+        document.getElementById('cart-items-container').addEventListener('click', function(event) {
+            const target = event.target;
+            // Get item ID from data-item-id attribute on the button/span
+            const itemId = parseInt(target.dataset.itemId); 
+
+            // Ensure a valid item ID is present
+            if (isNaN(itemId)) {
+                // console.warn("Invalid item ID for quantity change or removal.");
+                return; 
+            }
+
+            if (target.classList.contains('qtybtn')) {
+                if (target.classList.contains('inc')) {
+                    changeQty(itemId, 1);
+                } else if (target.classList.contains('dec')) {
+                    changeQty(itemId, -1);
+                }
+            } else if (target.classList.contains('icon_close')) {
+                removeItem(itemId);
+            }
+        });
+
+        // Handle "Update Cart" button click
+        document.querySelector('.update-cart').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            loadCartItems(); // Simply re-render the cart
+            alert('Cart updated successfully!');
+        });
+
+
+        // Initial load of cart items when the page loads
+        loadCartItems();
+
+
+        // --- Existing Login Check and Update Function (from your original code) ---
+        // header แสดงชื่อ user
         const loggedInUserId = localStorage.getItem('loggedInUserId');
-        
         const desktopAuthSection = document.getElementById('desktopAuthSection');
         const mobileAuthSection = document.getElementById('mobileAuthSection');
-
-        // --- ฟังก์ชันช่วยเหลือสำหรับจัดการ UI ของ Header ---
-        function updateAuthSection(userId, username) {
-            if (desktopAuthSection) {
-                if (userId && username) {
-                    desktopAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
-                } else {
-                    desktopAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
-                }
-            }
-            if (mobileAuthSection) {
-                if (userId && username) {
-                    mobileAuthSection.innerHTML = `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>`;
-                } else {
-                    mobileAuthSection.innerHTML = `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
-                }
-            }
-        }
-
-        // --- ฟังก์ชัน Logout (ต้องมีในโค้ดถ้าคุณมีปุ่ม Logout ในหน้าใดๆ) ---
-        function handleLogout() {
-            localStorage.removeItem('loggedInUserId');
-            alert('ออกจากระบบแล้ว');
-            window.location.href = 'index.html'; // ไปหน้าหลัก
-        }
 
         if (loggedInUserId) {
             fetch(`http://localhost:3000/api/users/${loggedInUserId}`)
                 .then(response => {
-                    if (!response.ok) { 
-                        console.error('Header Auth Error: User session invalid or not found. Status:', response.status);
+                    if (!response.ok) {
+                        console.error('Error fetching user profile: Status', response.status);
                         localStorage.removeItem('loggedInUserId');
                         updateAuthSection(null, null);
-                        alert('Session expired. Please log in again.'); 
-                        window.location.href = "login.html"; 
+                        alert('Session expired. Please log in again.');
+                        window.location.href = "login.html";
                         throw new Error('User not found or session expired. Status: ' + response.status);
                     }
                     return response.json();
@@ -489,113 +531,31 @@
                     if (user && user.username) {
                         updateAuthSection(user.id, user.username);
                     } else {
-                        console.warn("User data retrieved but username is missing. Clearing session.");
+                        console.warn("User data retrieved but username is missing.");
                         localStorage.removeItem('loggedInUserId');
                         updateAuthSection(null, null);
                     }
                 })
                 .catch(error => {
                     console.error("Error fetching user profile for header:", error);
-                    localStorage.removeItem('loggedInUserId'); 
-                    updateAuthSection(null, null); 
+                    localStorage.removeItem('loggedInUserId');
+                    updateAuthSection(null, null);
                 });
         } else {
             updateAuthSection(null, null);
         }
 
-        const logoutButton = document.getElementById('logoutButton');
-        if (logoutButton) {
-            logoutButton.addEventListener('click', handleLogout);
-        }
-
-        // --- โค้ดสำหรับหน้า Shopping Cart (ใน shopping-cart.html เท่านั้น) ---
-        if (window.location.pathname.includes('shopping-cart.html')) {
-            const cartItemsContainer = document.getElementById('cartItems'); // ต้องมี Element นี้ใน shopping-cart.html
-            if (!cartItemsContainer) {
-                console.error("Cart Page Error: Element with ID 'cartItems' not found.");
-                return; // หยุดการทำงานถ้าหา Element ไม่เจอ
+        function updateAuthSection(userId, username) {
+            if (desktopAuthSection) {
+                desktopAuthSection.innerHTML = userId && username ? `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>` : `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
             }
-
-            // ถ้ายังไม่ได้ Login ก็แสดงข้อความในตะกร้าสินค้า
-            if (!loggedInUserId) { 
-                cartItemsContainer.innerHTML = '<p style="color: grey; text-align: center; margin-top: 50px;">กรุณาเข้าสู่ระบบเพื่อดูสินค้าในตะกร้า</p>';
-                return; // หยุดการทำงานส่วนนี้
-            }
-
-            // ดึงข้อมูลตะกร้าสินค้า (เฉพาะเมื่อ Login แล้ว)
-            // *** API URL นี้ต้องตรงกับ Backend ของคุณ ***
-            fetch(`http://localhost:3000/api/cart/${loggedInUserId}`) 
-                .then(response => {
-                    if (!response.ok) {
-                        const errorData = response.json().catch(() => ({ message: 'Unknown error' }));
-                        console.error('Cart Page Fetch Error: Status', response.status, errorData);
-                        cartItemsContainer.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">ไม่สามารถโหลดตะกร้าสินค้าได้: ${errorData.message || 'Unknown error'}</p>`;
-                        return;
-                    }
-                    return response.json();
-                })
-                .then(cart => {
-                    renderCart(cart); // เรียกฟังก์ชันแสดงผลตะกร้า
-                })
-                .catch(error => {
-                    console.error('Cart Page Critical Error:', error);
-                    cartItemsContainer.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">เกิดข้อผิดพลาดในการโหลดตะกร้าสินค้า.</p>`;
-                });
-
-            // *** ฟังก์ชัน renderCart() ต้องมีอยู่ใน shopping-cart.html ด้วย ***
-            function renderCart(cartData) {
-                if (!cartItemsContainer) return;
-
-                let cartHtml = '';
-                if (cartData && cartData.items && cartData.items.length > 0) {
-                    cartHtml += `
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="shoping__product">Products</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    `;
-                    cartData.items.forEach(item => {
-                        const productName = item.productName || 'N/A';
-                        const quantity = item.quantity || 0;
-                        const price = typeof item.price === 'number' ? item.price.toFixed(2) : '0.00';
-                        const total = (quantity * parseFloat(price)).toFixed(2);
-
-                        cartHtml += `
-                            <tr>
-                                <td class="shoping__cart__item">
-                                    <h5>${productName}</h5>
-                                </td>
-                                <td class="shoping__cart__price">$${price}</td>
-                                <td class="shoping__cart__quantity">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="${quantity}">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="shoping__cart__total">$${total}</td>
-                                <td class="shoping__cart__item__close">
-                                    <span class="icon_close"></span>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                    cartHtml += `
-                            </tbody>
-                        </table>
-                    `;
-                } else {
-                    cartHtml = '<p style="text-align: center; margin-top: 50px;">ตะกร้าสินค้าของคุณว่างเปล่า</p>';
-                }
-                cartItemsContainer.innerHTML = cartHtml;
+            if (mobileAuthSection) {
+                mobileAuthSection.innerHTML = userId && username ? `<a href="./profile.html"><i class="fa fa-user"></i> ${username}</a>` : `<a href="./login.html"><i class="fa fa-user"></i> Login</a>`;
             }
         }
     });
 </script>
+
+</body>
+
+</html>

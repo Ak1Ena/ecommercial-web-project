@@ -38,9 +38,9 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span id="cartItemCount">0</span></a></li>
+                <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span id="mobile-cart-count">0</span></a></li>
             </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
+            <div class="header__cart__price">item: <span id="mobile-cart-total">$0.00</span></div>
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
@@ -155,9 +155,9 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span id="cartItemCount">0</span></a></li>
+                            <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span id="desktop-cart-count">0</span></a></li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
+                        <div class="header__cart__price">item: <span id="desktop-cart-total">$0.00</span></div>
                     </div>
                 </div>
             </div>
@@ -709,7 +709,7 @@
                             <li>Email: hello@colorlib.com</li>
                         </ul>
                     </div>
-                </div>
+             </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
                     <div class="footer__widget">
                         <h6>Useful Links</h6>
@@ -774,6 +774,7 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        
         const loggedInUserId = localStorage.getItem('loggedInUserId');
 
         const desktopAuthSection = document.getElementById('desktopAuthSection');
