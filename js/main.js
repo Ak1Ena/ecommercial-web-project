@@ -15,6 +15,8 @@
         Preloader
     --------------------*/
     $(window).on('load', function () {
+        
+
         $(".loader").fadeOut();
         $("#preloder").delay(200).fadeOut("slow");
 
@@ -236,4 +238,13 @@ document.getElementById('search-btn').addEventListener('click', function() {
     }
     localStorage.setItem('searchQuery', searchInput);
     window.location.href = 'shop-grid.html';
+});
+$(document).ready(function() {
+    $(document).on('click', '.fa-shopping-cart, a:has(.fa-shopping-cart)', function(e) {
+        e.preventDefault();  // Prevent default link behavior
+        e.stopPropagation(); // Stop event bubbling
+        console.log($(this).data('product-id'));
+        alert('hello');
+        return false; // Extra prevention for older browsers
+    });
 });

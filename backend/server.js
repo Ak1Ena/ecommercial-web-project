@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 
 const path = require('path');
 const app = express();
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../')));
 
 const PORT = 4000;
 
@@ -14,6 +14,9 @@ app.use(bodyParser.json())
 app.use('/api/products', require('./routes/products'));
 app.use('/api/users', require('./routes/users'));
 
+app.get('/', (req, res) => {
+    res.sendFile('index.html', { root: __dirname });
+});
 
 
 app.listen(PORT, ()=>{
