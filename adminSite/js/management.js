@@ -1,7 +1,12 @@
 let container = document.getElementById("container")
-document.getElementById("Products").addEventListener("click", function() {
+
+window.addEventListener("load", function() {
+    loadAllProducts();
+});
+
+async function loadAllProducts() {
     console.log("Products button clicked");
-    fetch('http://localhost:4000/api/products/get', {
+    await fetch('http://localhost:4000/api/products/get', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -49,6 +54,9 @@ document.getElementById("Products").addEventListener("click", function() {
             tableBody.appendChild(productRow);
         });
     })
+}
+document.getElementById("Products").addEventListener("click", function() {
+    loadAllProducts();
 });
 
 function editProduct(id) {
