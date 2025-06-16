@@ -141,37 +141,39 @@ document.addEventListener('DOMContentLoaded', function() {
 function filter() {
     document.getElementById('products-list').style.display = '';
     document.getElementById('products-list-search').innerHTML = '';
-    const min = parseFloat(minInput.value.replace('$', ''));
-    const max = parseFloat(maxInput.value.replace('$', ''));
-
-    fetch('http://localhost:4000/api/products/get')
+    
+    const min = parseFloat(minInput.value.replace('$', '')) || 0;
+    const max = parseFloat(maxInput.value.replace('$', '')) || 999999;
+    const filterValue = localStorage.getItem('filterValue') || '*';
+    
+    let fetchUrl;
+    
+    // Use appropriate endpoint based on filter value
+    if (filterValue === '*') {
+        // Get all products
+        fetchUrl = 'http://localhost:4000/api/products/get';
+    } else {
+        // Get products by category
+        fetchUrl = `http://localhost:4000/api/products/categories/${filterValue}`;
+    }
+    
+    fetch(fetchUrl)
         .then(response => response.json())
         .then(data => {
-            let filteredProducts;
-            const filterValue = localStorage.getItem('filterValue') || '*';
-            if (filterValue !== '*') {
-                filteredProducts = data.filter(product => {
-                    const category = filterValue.toLowerCase();
-                    const price = product.price * (1 - product.discount / 100);
-                    return product.category.toLowerCase() === category && price >= min && price <= max;
-                });
-            } else {
-                filteredProducts = data.filter(product => {
-                    const price = product.price * (1 - product.discount / 100);
-                    return price >= min && price <= max;
-                });
-            }
-
+            const filteredProducts = data.filter(product => {
+                const price = product.price * (1 - product.discount / 100);
+                return price >= min && price <= max;
+            });
+            
             document.getElementById('found').textContent = filteredProducts.length;
             const productsList = document.getElementById('products-list');
-            productsList.innerHTML = ''; // Clear existing products
+            productsList.innerHTML = ''; 
 
             filteredProducts.forEach(product => {
                 const productItem = document.createElement('div');
                 productItem.className = 'col-lg-4 col-md-6 col-sm-6';
                 let imgPath = product.img.replace(/\\/g, '/');
 
-                // FIX: ใช้โครงสร้าง .product__discount__item สำหรับสินค้าลดราคา
                 if (product.discount > 0) {
                     productItem.innerHTML = `
                         <div class="product__discount__item">
@@ -180,7 +182,7 @@ function filter() {
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                    <li><a href="#" data-product-id="${product.id}"><i class="fa fa-shopping-cart"data-product-id="${product.id}"></i></a></li>
+                                    <li><a href="#" data-product-id="${product.id}"><i class="fa fa-shopping-cart" data-product-id="${product.id}"></i></a></li>
                                 </ul>
                             </div>
                             <div class="product__discount__item__text">
@@ -197,7 +199,7 @@ function filter() {
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                    <li><a href="#" data-product-id="${product.id}"><i class="fa fa-shopping-cart"data-product-id="${product.id}"></i></a></li>
+                                    <li><a href="#" data-product-id="${product.id}"><i class="fa fa-shopping-cart" data-product-id="${product.id}"></i></a></li>
                                 </ul>
                             </div>
                             <div class="product__item__text">
@@ -210,14 +212,15 @@ function filter() {
                 productsList.appendChild(productItem);
             });
 
-            // สำคัญ! ต้องรัน set-bg หลังจาก append สินค้าใหม่
+            // Run set-bg after appending new products
             $('.set-bg').each(function () {
                 var bg = $(this).data('setbg');
                 $(this).css('background-image', 'url(' + bg + ')');
             });
         })
-        .catch(error => console.error('Error fetching products:', error));
+        .catch(error => console.error('Error filtering products:', error));
 }
+
 
 // Add event listeners for price inputs
 minInput.addEventListener('change', filter);

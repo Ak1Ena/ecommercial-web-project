@@ -150,40 +150,83 @@ async function loadProductCategory(category){
     }
     return await response.json();
 }
+async function getCartFromBackend(userId) {
+    try {
+        const response = await fetch('http://localhost:4000/api/users/cart/get', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ id: userId })
+        });
+        if (!response.ok) throw new Error('Failed to fetch cart');
+        const data = await response.json();
+        // สมมติ backend ส่ง cart เป็น array หรือส่ง [] ถ้าไม่มีสินค้า
+        return data.cart || [];
+    } catch (error) {
+        console.error('Error fetching cart:', error);
+        return [];
+    }
+}
 
-async function addToCart(){
-    if(sessionStorage.getItem('userId') === null) {
+async function updateCartToBackend(userId, cart) {
+    try {
+        const response = await fetch('http://localhost:4000/api/users/cart/update', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ id: userId, cart: cart })
+        });
+        if (!response.ok) throw new Error('Failed to update cart');
+        const data = await response.json();
+        return data.success === true;
+    } catch (error) {
+        console.error('Error updating cart:', error);
+        return false;
+    }
+}
+async function addToCart() {
+    const userId = sessionStorage.getItem('userId');
+    if (!userId) {
         alert("Please login to add products to the cart.");
-        window.location.href = "login.html"; 
+        window.location.href = "login.html";
         return;
     }
-    const quantity = document.getElementById('quantity').value;
+
+    const quantity = parseInt(document.getElementById('quantity').value);
     const productid = checkProductId();
-    if(!productid) {
+    if (!productid) {
         alert("Product ID is invalid or not found.");
-        window.location.href = "index.html"; 
+        window.location.href = "index.html";
         return;
     }
+
     const product = await loadProductDetails(productid);
-    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-    if(cart.some(item => item.productId === productid)) {
-        console.log("Product already in cart, updating quantity.");
-        cart.quantity += parseInt(quantity);
-        cart.total += (product.price * (1 - product.discount / 100).toFixed(2));
-        return;
+
+    let cart = await getCartFromBackend(userId);
+
+    const existingIndex = cart.findIndex(item => item.productId === productid);
+    const discountedPrice = product.price * (1 - product.discount / 100);
+
+    if (existingIndex !== -1) {
+        cart[existingIndex].quantity += quantity;
+        cart[existingIndex].total = parseFloat((discountedPrice * cart[existingIndex].quantity).toFixed(2));
+    } else {
+        cart.push({
+            productId: productid,
+            name: product.name,
+            price: product.price,
+            total: parseFloat((discountedPrice * quantity).toFixed(2)),
+            quantity: quantity,
+            MaxQty: product.quantity,
+            discount: product.discount,
+            img: product.img
+        });
     }
-    cart.push({
-        productId: productid,
-        name: product.name,
-        price: product.price,
-        total: (product.price * (1 - product.discount / 100).toFixed(2)) * quantity,
-        quantity: quantity,
-        MaxQty: product.quantity,
-        discount: product.discount,
-        img: product.img
-    });
-    console.log("Adding product to cart:", product);
-    sessionStorage.setItem('cart', JSON.stringify(cart));
-    console.log(sessionStorage.getItem('cart'));
-    window.location.href = 'index.html'
+
+    const success = await updateCartToBackend(userId, cart);
+
+    if(success) {
+        alert("Added to cart successfully!");
+        window.location.href = 'index.html';
+    } else {
+        alert("Failed to update cart. Please try again.");
+    }
 }

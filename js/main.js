@@ -229,15 +229,15 @@
 
 })(jQuery);
 
-window.onload = function() {
-    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-    const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-    const targetSpan = document.querySelector('li > a > i.fa-shopping-bag + span');
-    if(targetSpan) {
-        targetSpan.textContent = totalQuantity;
-    }
+// window.onload = function() {
+//     const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+//     const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+//     const targetSpan = document.querySelector('li > a > i.fa-shopping-bag + span');
+//     if(targetSpan) {
+//         targetSpan.textContent = totalQuantity;
+//     }
 
-}
+// }
 
 document.getElementById('search-btn').addEventListener('click', function() {
     const searchInput = document.getElementById('search-input').value.trim();
@@ -279,18 +279,53 @@ $(document).ready(function() {
     });
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-    const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+async function getCart(id) {
+    const response = await fetch('http://localhost:4000/api/users/cart/get', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id })
+    });
 
-    // เลือกทุก span ที่อยู่ข้างหลัง icon fa-shopping-bag
+    const result = await response.json();
+    return { result, ok: response.ok };
+}
+
+window.onload = async function () {
+    const userId = sessionStorage.getItem('userId');
+
     const targetSpans = document.querySelectorAll('li > a > i.fa-shopping-bag + span');
 
-    if(targetSpans.length === 0) {
-        console.warn('ไม่พบ element ที่ต้องการในหน้านี้');
-    } else {
+    const updateCartCount = (count) => {
+        if (targetSpans.length === 0) {
+            console.warn('ไม่พบ element ที่ต้องการในหน้านี้');
+            return;
+        }
         targetSpans.forEach(span => {
-            span.textContent = totalQuantity;
+            span.textContent = count;
         });
+    };
+
+    if (!userId) {
+        updateCartCount(0);
+        return;
     }
-});
+
+    try {
+        const { result, ok } = await getCart(userId);
+
+        if (!ok || !result.cart) {
+            updateCartCount(0);
+            return;
+        }
+
+        const cart = result.cart;
+        const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        updateCartCount(totalQuantity);
+
+    } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการโหลด cart:', error);
+        updateCartCount(0);
+    }
+};
