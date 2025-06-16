@@ -10,9 +10,55 @@ async function initShopDetail() {
     }
     const product = await loadProductDetails(productid);
     HTMLStruture(product);
+    HTMLStrutureRelate(product);
+}
+function getRandomItems(array, count) {
+    const shuffled = array.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+}
+async function relatedProduct(product){
+    try {
+        const data = await loadProductCategory(product.category);
+        const filtered = data.filter(p => p.id !== product.id);
+        const maxCount = Math.min(4, filtered.length);
+        const related = getRandomItems(filtered, maxCount);
 
+        console.log("สินค้าแนะนำ:", related);
+        return related;
+
+    } catch (error) {
+        console.error("เกิดข้อผิดพลาด:", error);
+        return [];
+    }
 }
 
+function HTMLStrutureRelate(product){
+    console.log(product.category)
+    const relatedContrainer = document.getElementById('related-product')
+    relatedContrainer.innerHTML = '';
+    relatedProduct(product)
+    .then(related => {
+        for(let item of related){
+            relatedContrainer.innerHTML += `
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="${item.img}" style="background-image: url(${item.img})">
+                            <ul class="product__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">${item.name}</a></h6>
+                            <h5>$${item.price * (1 - item.discount / 100).toFixed(2)}</h5>
+                        </div>
+                    </div>
+                </div>
+            `
+        }
+    })
+}
 function HTMLStruture(product){
     if(checkJson(product)) {
         const productDetails = document.getElementById('product-details');
@@ -93,6 +139,14 @@ async function loadProductDetails(productid){
     const response = await fetch(`http://localhost:4000/api/products/get/${productid}`)
     if(!response.ok) {
         throw new Error("Network response was not ok");
+    }
+    return await response.json();
+}
+
+async function loadProductCategory(category){
+    const response = await fetch(`http://localhost:4000/api/products/categories/${category}`)
+    if(!response.ok){
+        throw new Error("Network response was not ok")
     }
     return await response.json();
 }

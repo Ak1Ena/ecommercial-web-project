@@ -3,6 +3,10 @@ window.onload = initCart;
 let total;
 
 async function initCart() {
+    if(!sessionStorage.getItem('userId')){
+        alert('Please login . . .')
+        window.location.href = 'login.html'
+    }
     document.getElementById('cart-items').innerHTML = ''; // Clear existing cart items
     const cart = await getCart();
     if (cart.length > 0) {
@@ -57,7 +61,7 @@ function HTMLStrutureCart(cart) {
 function removeProduct(productid){
     console.log(`Removing product with ID: ${productid}`);
     const cart = JSON.parse(sessionStorage.getItem('cart'));
-const updatedCart = cart.filter(item => parseInt(item.productId) !== parseInt(productid));
+    const updatedCart = cart.filter(item => parseInt(item.productId) !== parseInt(productid));
     sessionStorage.setItem('cart', JSON.stringify(updatedCart));
     console.log(JSON.parse(sessionStorage.getItem('cart')))
     initCart();

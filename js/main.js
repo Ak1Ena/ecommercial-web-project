@@ -252,16 +252,12 @@ document.getElementById('search-btn').addEventListener('click', function() {
 $(document).ready(function() {
     
     const userId = sessionStorage.getItem('userId');
-    const username = sessionStorage.getItem('username');
-    const $logoutBtn = $('#logoutBtn');
 
 
-    if (userId && username) {
-        $('.header__top__right__auth a').html('<i class="fa fa-user"></i> ' + username);
-        $logoutBtn.show();
+    if (userId) {
+        $('.header__top__right__auth a').html('<i class="fa fa-user"></i> Logout').attr('style', 'background-color:red; color:white; padding:5px 10px; border-radius:5px;');
     } else {
-        $('.header__top__right__auth a').html('<i class="fa fa-user"></i> Login');
-        $logoutBtn.hide();
+        $('.header__top__right__auth a').html('<i class="fa fa-user"></i> Login').removeAttr('style');
     }
 
     $(document).on('click', '.fa-shopping-cart, a:has(.fa-shopping-cart)', function(e) {
@@ -272,25 +268,14 @@ $(document).ready(function() {
         window.location.href = 'shop-details.html';
     });
     $(document).on('click', '.header__top__right__auth a', function(e) {
-    e.preventDefault();
-    const userId = sessionStorage.getItem('userId');
-    
-    if (userId) {
-        // อาจจะเปลี่ยนเป็นหน้าบัญชีผู้ใช้
-        window.location.href = 'index.html';
-    } else {
-        window.location.href = 'login.html';
-    }
-});
-$logoutBtn.on('click', function () {
-        // sessionStorage.removeItem('userId');
-        // sessionStorage.removeItem('userName');
-        // sessionStorage.removeItem('cart');
-        // ถ้ามี key อื่นที่เก็บไว้เกี่ยวกับ login ก็ลบด้วย
-        sessionStorage.clear(); // ถ้าต้องการลบทั้งหมด
-
-        alert('Logout สำเร็จ!');
-        window.location.href = 'login.html';
+        e.preventDefault();
+        if(userId){
+            sessionStorage.clear();
+            alert('LogOut successed!')
+            window.location.href = 'index.html'
+        }else{
+            window.location.href = 'login.html'
+        }
     });
 });
 

@@ -110,6 +110,23 @@ router.post('/add', (req, res) => {
     });
 });
 
+router.get('/categories/:category', (req, res) => {
+    const category = req.params.category;
+
+    const sql = 'SELECT * FROM products WHERE category = ?';
+    db.all(sql, [category], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        if (!rows || rows.length === 0) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        console.log(`Products retrieved: ${JSON.stringify(rows)}`);
+        res.json(rows); // ส่ง array กลับ
+    });
+});
+
 router.get('/get/:id', (req, res) => {
     const id = req.params.id;
     console.log(`Get Product request received for ID: ${id}`);

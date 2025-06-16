@@ -23,7 +23,6 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         if (response.ok) {
             alert(result.message || 'Login successful');
             sessionStorage.setItem('userId', result.user.id);
-            sessionStorage.setItem('username',result.user.firstName)
             console.log(sessionStorage.getItem('username'))
             window.location.href = 'index.html';
         } else {
