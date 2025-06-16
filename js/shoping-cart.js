@@ -96,7 +96,6 @@ async function removeProduct(productid){
     }
 }
 
-// เปลี่ยนจำนวนสินค้าและอัปเดต backend
 async function changeQty(number, productQty, price, span, productId) {
     const row = span.closest('tr');
     const qtyInput = row.querySelector('input[type="text"]');

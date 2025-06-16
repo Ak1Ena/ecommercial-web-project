@@ -292,7 +292,7 @@ async function getCart(id) {
     return { result, ok: response.ok };
 }
 
-window.onload = async function () {
+document.addEventListener('DOMContentLoaded', async function () {
     const userId = sessionStorage.getItem('userId');
 
     const targetSpans = document.querySelectorAll('li > a > i.fa-shopping-bag + span');
@@ -328,4 +328,4 @@ window.onload = async function () {
         console.error('เกิดข้อผิดพลาดในการโหลด cart:', error);
         updateCartCount(0);
     }
-};
+});

@@ -212,7 +212,7 @@ async function addToCart() {
         cart.push({
             productId: productid,
             name: product.name,
-            price: product.price,
+            price: (product.price * (1 - product.discount / 100)).toFixed(2),
             total: parseFloat((discountedPrice * quantity).toFixed(2)),
             quantity: quantity,
             MaxQty: product.quantity,

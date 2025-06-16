@@ -4,14 +4,18 @@ searchButton.addEventListener('click', function() {
     searchProducts(searchInput);
 });
 window.onload = function() {
-
-    if(localStorage.getItem('searchQuery')) {
+    console.log('test');
+    if(sessionStorage.getItem('searchQuery')) {
         const searchInput = document.getElementById('search-input');
-        searchInput.value = localStorage.getItem('searchQuery');
-        searchProducts(searchInput.value.trim());
-        localStorage.removeItem('searchQuery'); 
-    }else{
-        console.log("No search query found in localStorage.");
+        if (searchInput) {
+            searchInput.value = sessionStorage.getItem('searchQuery');
+            searchProducts(searchInput.value.trim());
+            sessionStorage.removeItem('searchQuery'); 
+        } else {
+            console.warn('search-input not found');
+        }
+    } else {
+        console.log("No search query found in sessionStorage.");
     }
 }
 
