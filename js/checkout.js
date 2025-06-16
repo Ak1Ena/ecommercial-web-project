@@ -3,21 +3,16 @@ const submitOrder = document.getElementById('submit-order');
 submitOrder.addEventListener('click', submitOrderHandler);
 
 function submitOrderHandler() {
-    console.log("test")
-    let items = JSON.parse(localStorage.getItem('items') || '[]');
-    let userID = localStorage.getItem('userID');
-    userID = 1 // For testing purposes, hardcoding userID to 1
-    items = [{id:1, name: 'Test Product', category: 'Fruit', quantity:10}]; // For testing purposes, hardcoding items
+    let items = JSON.parse(sessionStorage.getItem('cart') || '[]');
+    let userID = sessionStorage.getItem('userId');
     if (!userID) {
         alert('You must be logged in to checkout.');
         return;
     }
-    if (!items || items === '[]') {
+    if(items.length === 0) {
         alert('Your cart is empty.');
         return;
     }
-
-
 
     items.forEach(item => {
     fetch('http://localhost:4000/api/users/checkout', {
@@ -32,7 +27,11 @@ function submitOrderHandler() {
         if (!res.ok) throw new Error('Network response was not ok');
         return res.json();
     })
-    .then(data => console.log('Success:', data))
+    .then(data => {
+        alert('พัสดุกำลังถูกจัดส่ง กรุณารอสักครู่...')
+        sessionStorage.removeItem('cart');
+        window.location.href = 'index.html'
+    })
     .catch(error => console.error('Error:', error));
     });
 

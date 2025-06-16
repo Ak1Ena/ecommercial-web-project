@@ -229,6 +229,16 @@
 
 })(jQuery);
 
+window.onload = function() {
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    const targetSpan = document.querySelector('li > a > i.fa-shopping-bag + span');
+    if(targetSpan) {
+        targetSpan.textContent = totalQuantity;
+    }
+
+}
+
 document.getElementById('search-btn').addEventListener('click', function() {
     const searchInput = document.getElementById('search-input').value.trim();
     console.log('Search button clicked');
@@ -236,15 +246,66 @@ document.getElementById('search-btn').addEventListener('click', function() {
         alert('Please enter a search term.');
         return;
     }
-    localStorage.setItem('searchQuery', searchInput);
+    sessionStorage.setItem('searchQuery', searchInput);
     window.location.href = 'shop-grid.html';
 });
 $(document).ready(function() {
+    
+    const userId = sessionStorage.getItem('userId');
+    const username = sessionStorage.getItem('username');
+    const $logoutBtn = $('#logoutBtn');
+
+
+    if (userId && username) {
+        $('.header__top__right__auth a').html('<i class="fa fa-user"></i> ' + username);
+        $logoutBtn.show();
+    } else {
+        $('.header__top__right__auth a').html('<i class="fa fa-user"></i> Login');
+        $logoutBtn.hide();
+    }
+
     $(document).on('click', '.fa-shopping-cart, a:has(.fa-shopping-cart)', function(e) {
         e.preventDefault();  // Prevent default link behavior
         e.stopPropagation(); // Stop event bubbling
         console.log($(this).data('product-id'));
-        alert('hello');
-        return false; // Extra prevention for older browsers
+        sessionStorage.setItem('productId', $(this).data('product-id'));
+        window.location.href = 'shop-details.html';
     });
+    $(document).on('click', '.header__top__right__auth a', function(e) {
+    e.preventDefault();
+    const userId = sessionStorage.getItem('userId');
+    
+    if (userId) {
+        // อาจจะเปลี่ยนเป็นหน้าบัญชีผู้ใช้
+        window.location.href = 'index.html';
+    } else {
+        window.location.href = 'login.html';
+    }
+});
+$logoutBtn.on('click', function () {
+        // sessionStorage.removeItem('userId');
+        // sessionStorage.removeItem('userName');
+        // sessionStorage.removeItem('cart');
+        // ถ้ามี key อื่นที่เก็บไว้เกี่ยวกับ login ก็ลบด้วย
+        sessionStorage.clear(); // ถ้าต้องการลบทั้งหมด
+
+        alert('Logout สำเร็จ!');
+        window.location.href = 'login.html';
+    });
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+
+    // เลือกทุก span ที่อยู่ข้างหลัง icon fa-shopping-bag
+    const targetSpans = document.querySelectorAll('li > a > i.fa-shopping-bag + span');
+
+    if(targetSpans.length === 0) {
+        console.warn('ไม่พบ element ที่ต้องการในหน้านี้');
+    } else {
+        targetSpans.forEach(span => {
+            span.textContent = totalQuantity;
+        });
+    }
 });

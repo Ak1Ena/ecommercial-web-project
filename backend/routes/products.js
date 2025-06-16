@@ -158,4 +158,42 @@ router.get('/search', (req, res) => {
     });
 });
 
+router.post('/quantity', (req, res) => {
+    console.log("Update Product Quantity request received");
+    const { id, quantity } = req.body;
+
+    if (!id || typeof quantity !== 'number') {
+        return res.status(400).json({ error: 'Product ID and valid quantity are required' });
+    }
+
+    const getSql = 'SELECT quantity FROM products WHERE id = ?';
+    db.get(getSql, [id], (err, row) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        if (!row) {
+            console.log(`No product found with ID ${id}`);
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        const currentQuantity = row.quantity || 0;
+        const newQuantity = currentQuantity - quantity;
+
+        if (newQuantity < 0) {
+            return res.status(400).json({ error: 'Insufficient stock' });
+        }
+
+        const updateSql = `UPDATE products SET quantity = ? WHERE id = ?`;
+        db.run(updateSql, [newQuantity, id], function(err) {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+            console.log(`Product with ID ${id} updated successfully with new quantity ${newQuantity}`);
+            res.status(200).json({ message: 'Product quantity updated successfully', newQuantity });
+        });
+    });
+});
+
 module.exports = router;
