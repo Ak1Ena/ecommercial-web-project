@@ -168,4 +168,5 @@ function recalcTotal(cart) {
 function updateTotalPrice(amount){
     document.getElementById('total').textContent = `$${amount.toFixed(2)}`;
     document.getElementById('subtotal').textContent = `$${amount.toFixed(2)}`;
+
 }
