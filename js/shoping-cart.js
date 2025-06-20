@@ -2,6 +2,10 @@ window.onload = initCart;
 
 let total;
 
+document.getElementById('submit-order').addEventListener('click', ()=>{
+    window.location.href = 'checkout.html'
+});
+
 async function initCart() {
     if(!sessionStorage.getItem('userId')){
         alert('Please login . . .')

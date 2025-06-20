@@ -224,8 +224,9 @@ async function addToCart() {
     const success = await updateCartToBackend(userId, cart);
 
     if(success) {
-        alert("Added to cart successfully!");
         window.location.href = 'index.html';
+        alert("Added to cart successfully!");
+
     } else {
         alert("Failed to update cart. Please try again.");
     }

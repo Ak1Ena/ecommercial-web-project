@@ -52,6 +52,7 @@ function searchProducts(searchInput) {
                 productListSearch.innerHTML = '<p>No products found.</p>';
                 return;
             }
+            document.getElementById('found').innerHTML = data.length;
 
             data.forEach(product => {
                 const productItem = document.createElement('div');

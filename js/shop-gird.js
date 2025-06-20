@@ -1,5 +1,4 @@
-const minInput = document.getElementById('minamount');
-const maxInput = document.getElementById('maxamount');
+
 
 document.querySelectorAll('.sidebar__item ul li').forEach(link => {
     link.addEventListener('click', function(e) {
@@ -136,14 +135,39 @@ function loadAllProducts() {
         .catch(error => console.error('Error fetching products:', error));
 }
 document.addEventListener('DOMContentLoaded', function() {
+    minInput.addEventListener('change', filter);
+    maxInput.addEventListener('change', filter);
     loadAllProducts();
+     minInput.addEventListener('change', filter);
+  maxInput.addEventListener('change', filter);
+
+  $(".price-range").slider({
+    range: true,
+    min: 0,
+    max: 100,
+    values: [0, 100],
+    slide: function(event, ui) {
+      $("#minamount").val("$" + ui.values[0]);
+      $("#maxamount").val("$" + ui.values[1]);
+    },
+    stop: function(event, ui) {
+      filter();
+    }
+  });
+
+  $("#minamount").val("$" + $(".price-range").slider("values", 0));
+  $("#maxamount").val("$" + $(".price-range").slider("values", 1));
 });
+
+const minInput = document.getElementById('minamount');
+const maxInput = document.getElementById('maxamount');
+
 function filter() {
     document.getElementById('products-list').style.display = '';
     document.getElementById('products-list-search').innerHTML = '';
     
     const min = parseFloat(minInput.value.replace('$', '')) || 0;
-    const max = parseFloat(maxInput.value.replace('$', '')) || 999999;
+    const max = parseFloat(maxInput.value.replace('$', '')) || 100;
     const filterValue = localStorage.getItem('filterValue') || '*';
     
     let fetchUrl;
@@ -223,21 +247,21 @@ function filter() {
 
 
 // Add event listeners for price inputs
-minInput.addEventListener('change', filter);
-maxInput.addEventListener('change', filter);
-$(".price-range").slider({
-    range: true,
-    min: 0,
-    max: 500,
-    values: [0, 500],
-    slide: function (event, ui) {
-        $("#minamount").val("$" + ui.values[0]);
-        $("#maxamount").val("$" + ui.values[1]);
-    },
-    stop: function(event, ui) {
-        filter();
-    }
-    });
 
-    $("#minamount").val("$" + $(".price-range").slider("values", 0));
-    $("#maxamount").val("$" + $(".price-range").slider("values", 1));
+// $(".price-range").slider({
+//     range: true,             // เปิดโหมด range มีปุ่มเลื่อน 2 ปุ่ม
+//     min: 0,                  // ค่าต่ำสุดคือ 0
+//     max: 100,                // ค่าสูงสุดคือ 100
+//     values: [0, 100],        // ค่าเริ่มต้นของปุ่มเลื่อนซ้าย-ขวา
+//     slide: function(event, ui) {
+//         $("#minamount").val("$" + ui.values[0]);   // เมื่อเลื่อนอัพเดตค่าใน input #minamount
+//         $("#maxamount").val("$" + ui.values[1]);   // เมื่อเลื่อนอัพเดตค่าใน input #maxamount
+//     },
+//     stop: function(event, ui) {
+//         filter();    // เมื่อเลื่อนเสร็จให้เรียกฟังก์ชัน filter() (คุณต้องเขียนเอง)
+//     }
+// });
+
+// // กำหนดค่าเริ่มต้นให้ input แสดงราคาแรกสุดเมื่อโหลดหน้า
+// $("#minamount").val("$" + $(".price-range").slider("values", 0));
+// $("#maxamount").val("$" + $(".price-range").slider("values", 1));

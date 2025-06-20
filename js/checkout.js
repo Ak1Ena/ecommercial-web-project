@@ -1,4 +1,26 @@
-const submitOrder = document.getElementById('submit-order');
+window.onload = () => {
+    initCheckout();
+    const submitOrder = document.getElementById('submitOrder');
+    if (submitOrder) {
+        submitOrder.addEventListener('click', submitOrderHandler);
+    } else {
+        console.warn('submitOrder button not found in the DOM.');
+    }
+};
+async function initCheckout() {
+    let userId = sessionStorage.getItem('userId');
+    if (userId) {
+        const { result, ok } = await getCart(userId);
+        if (ok) {
+            HTMLStrutureSLIP(result.cart);
+        } else {
+            alert('Failed to load cart');
+        }
+    } else {
+        alert('Please login . . .');
+        window.location.href = 'login.html';
+    }
+}
 
 submitOrder.addEventListener('click', submitOrderHandler);
 
@@ -15,6 +37,24 @@ async function getCart(id) {
     return { result, ok: response.ok };
 }
 
+function HTMLStrutureSLIP(cart) {
+    console.log("Cart received:", cart);
+    const list_container = document.getElementById('cart-list');
+    list_container.innerHTML = '';
+    let total = 0;
+    for (let item of cart) {
+        list_container.innerHTML += `
+            <li>${item.name} <span>$${item.total}</span></li>
+        `;
+        total += parseFloat(item.total);
+    }
+    updateTotalPrice(total);
+}
+
+function updateTotalPrice(amount){
+    document.getElementById('total').textContent = `$${amount.toFixed(2)}`;
+    document.getElementById('subtotal').textContent = `$${amount.toFixed(2)}`;
+}
 async function submitOrderHandler() {
     let userID = sessionStorage.getItem('userId');
     
@@ -22,7 +62,13 @@ async function submitOrderHandler() {
         alert('You must be logged in to checkout.');
         return;
     }
-
+    const codCheckbox = document.getElementById('cod');
+    
+    if (!codCheckbox.checked) {
+        alert("Please choose a payment method.");
+        e.preventDefault(); // ป้องกันการดำเนินการต่อ (เช่นส่งฟอร์ม)
+        return false;
+    }
     try {
         // Get cart data
         const cartResponse = await getCart(userID);
@@ -41,7 +87,6 @@ async function submitOrderHandler() {
             return;
         }
 
-        // Process each item individually (as your original code intended)
         const checkoutPromises = items.map(item => {
             return fetch('http://localhost:4000/api/users/checkout', {
                 method: 'POST',
@@ -61,10 +106,8 @@ async function submitOrderHandler() {
             });
         });
 
-        // Wait for all checkout requests to complete
         await Promise.all(checkoutPromises);
         
-        // Clear cart after all successful checkouts
         await clearCartInDb(userID);
         
         alert('พัสดุกำลังถูกจัดส่ง กรุณารอสักครู่...');
