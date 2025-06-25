@@ -4,6 +4,16 @@ window.addEventListener("load", function() {
     loadAllProducts();
 });
 
+// loadAllUsers = async function() {
+//     const response = await fetch('http://localhost:4000/api/users/get')
+//     if (!response.ok) {
+//         throw new Error('Network response was not ok');
+//     }
+//     const data = await response.json();
+//     console.log(data);
+//     return data;
+// }
+
 async function loadAllProducts() {
     console.log("Products button clicked");
     await fetch('http://localhost:4000/api/products/get', {
@@ -162,6 +172,89 @@ function deleteProduct(id){
     })
 
 }
+
+// document.getElementById("Users").addEventListener("click", function() {
+//     console.log("Users button clicked");
+//     loadAllUsers().then(users => {
+//         container.innerHTML = `
+//             <table class="table table-hover">
+//                 <thead>
+//                     <tr>
+//                         <th scope="col">#</th>
+//                         <th scope="col">Email</th>
+//                         <th scope="col">Items</th>
+//                         <th scope="col">Address</th>
+//                         <th scope="col">Actions</th>
+                        
+//                     </tr>
+//                 </thead>
+//                 <tbody id="user-table-body"></tbody>
+//             </table>
+//         `;
+//         const userTableBody = document.getElementById("user-table-body");
+//         users.forEach(user => {
+//             let historySummary = '';
+//             if (user.history) {
+//                 try {
+//                     const historyArray = JSON.parse(user.history);
+//                     const summary = {};
+
+//                     historyArray.forEach(item => {
+//                         const id = item.productId;
+//                         if (!summary[id]) {
+//                             summary[id] = { name: item.name, quantity: 0 };
+//                         }
+//                         summary[id].quantity += item.quantity;
+//                     });
+
+//                     historySummary = Object.values(summary)
+//                         .map(item => `${item.name} x${item.quantity}`)
+//                         .join('<br>');
+//                 } catch (e) {
+//                     historySummary = 'Invalid history data';
+//                 }
+//             }
+//             const userRow = document.createElement("tr");
+//             userRow.innerHTML = `
+//                 <th scope="row">${user.id}</th>
+//                 <td>${user.email}</td>
+//                 <td>${historySummary}</td>
+//                 <td>${user.address}</td>
+//                 <td>
+//                     <button class="btn btn-danger" onclick="deleteUser(${user.id})">Delete</button>
+//                 </td>`;
+//             userTableBody.appendChild(userRow);
+//         });
+//     }).catch(error => {
+//         console.error('Error loading users:', error);
+//         alert('Failed to load users');
+//     });
+
+// });
+
+// deleteUser = function(id) {
+//     console.log(`Delete User button clicked for ID: ${id}`);
+//     fetch('http://localhost:4000/api/users/delete', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ id })
+//     })
+//     .then(res => {
+//         if (!res.ok) throw new Error('Network response was not ok');
+//         return res.json();
+//     })
+//     .then(data => {
+//         console.log(data);
+//         alert('User deleted successfully');
+//         document.getElementById("Users").click(); // Refresh table
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert('Failed to delete user');
+//     });
+// }
 
 document.getElementById("AddProducts").addEventListener("click", function() {
     console.log("Add Product button clicked");
