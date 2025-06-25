@@ -11,7 +11,7 @@ const saltRounds = 10;
 db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      email TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
       password TEXT NOT NULL,
       firstName TEXT NOT NULL,
       lastName TEXT NOT NULL,
@@ -68,6 +68,9 @@ router.post('/register', async(req, res) => {
     const sql = `INSERT INTO users (email, password, firstName, lastName, phone, address) VALUES (?, ?, ?, ?, ?, ?)`;
     db.run(sql, [Email, hashedPassword, FirstName, LastName, PhoneNumber, Address], function (err) {
         if (err) {
+            if(err.message.includes('UNIQUE')) {
+                return res.status(400).json({ error: 'Email already exists' });
+            }
             console.error(err.message);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
@@ -97,6 +100,40 @@ router.post('/cart/update', (req, res) => {
         }
 
         res.json({ success: true, message: 'Cart updated successfully' });
+    });
+});
+
+router.post('/delete', (req, res) => {
+    const { id } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    const sql = 'DELETE FROM users WHERE id = ?';
+    db.run(sql, [id], function(err) {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        // ตรวจสอบว่ามีแถวถูกลบไหม
+        if (this.changes === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json({ message: 'User deleted successfully' });
+    });
+});
+
+router.get('/get', (req, res) => {
+    const sql = 'SELECT id, email, firstName, lastName, phone, address, history, cart FROM users';
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        res.json(rows);
     });
 });
 
