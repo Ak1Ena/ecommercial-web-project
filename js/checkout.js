@@ -87,26 +87,28 @@ async function submitOrderHandler() {
             return;
         }
 
-        const checkoutPromises = items.map(item => {
-            return fetch('http://localhost:4000/api/users/checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    products: [item],  // Single item in array
-                    id: userID
-                })
+        await fetch('http://localhost:4000/api/users/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                products: items,   // ส่งสินค้าทั้งหมดใน array เดียว
+                id: userID
             })
-            .then(res => {
-                if (!res.ok) {
-                    return res.text().then(errorText => {
-                        throw new Error(`Checkout failed for item: ${res.status} - ${errorText}`);
-                    });
-                }
-                return res.json();
-            });
+        })
+        .then(res => {
+            if (!res.ok) {
+                return res.text().then(errorText => {
+                    throw new Error(`Checkout failed: ${res.status} - ${errorText}`);
+                });
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log("Checkout success:", data);
+        })
+        .catch(error => {
+            console.error("Checkout error:", error.message);
         });
-
-        await Promise.all(checkoutPromises);
         
         await clearCartInDb(userID);
         
