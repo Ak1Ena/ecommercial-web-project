@@ -639,7 +639,7 @@ ol {
 }
 
 .hero__search__form {
-	width: 610px;
+	width: 920px;
 	height: 50px;
 	border: 1px solid #ebebeb;
 	position: relative;
@@ -3465,4 +3465,10 @@ ol {
 	.blog__details__hero__text h2 {
 		font-size: 24px;
 	}
+}
+.shoping__cart__item img {
+    width: 100px;       /* ความกว้างคงที่ */
+    height: 100px;      /* ความสูงคงที่ */
+    object-fit: cover;  /* ตัดรูปให้เต็มกรอบโดยไม่บิดเบี้ยว */
+    border-radius: 8px; /* ใส่มุมโค้งนิดๆ (ไม่บังคับ) */
 }

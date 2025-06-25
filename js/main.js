@@ -15,6 +15,8 @@
         Preloader
     --------------------*/
     $(window).on('load', function () {
+        
+
         $(".loader").fadeOut();
         $("#preloder").delay(200).fadeOut("slow");
 
@@ -27,7 +29,11 @@
         });
         if ($('.featured__filter').length > 0) {
             var containerEl = document.querySelector('.featured__filter');
-            var mixer = mixitup(containerEl);
+            window.mixer = mixitup(containerEl,{
+                selectors: {
+                    target: '.mix'
+                }
+            });
         }
     });
 
@@ -222,3 +228,104 @@
     });
 
 })(jQuery);
+
+// window.onload = function() {
+//     const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+//     const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+//     const targetSpan = document.querySelector('li > a > i.fa-shopping-bag + span');
+//     if(targetSpan) {
+//         targetSpan.textContent = totalQuantity;
+//     }
+
+// }
+
+document.getElementById('search-btn').addEventListener('click', function() {
+    const searchInput = document.getElementById('search-input').value.trim();
+    console.log('Search button clicked');
+    if (searchInput === '') {
+        alert('Please enter a search term.');
+        return;
+    }
+    sessionStorage.setItem('searchQuery', searchInput);
+    window.location.href = 'shop-grid.html';
+});
+$(document).ready(function() {
+    
+    const userId = sessionStorage.getItem('userId');
+
+
+    if (userId) {
+        $('.header__top__right__auth a').html('<i class="fa fa-user"></i> Logout').attr('style', 'background-color:red; color:white; padding:5px 10px; border-radius:5px;');
+    } else {
+        $('.header__top__right__auth a').html('<i class="fa fa-user"></i> Login').removeAttr('style');
+    }
+
+    $(document).on('click', '.fa-shopping-cart, a:has(.fa-shopping-cart)', function(e) {
+        e.preventDefault();  // Prevent default link behavior
+        e.stopPropagation(); // Stop event bubbling
+        console.log($(this).data('product-id'));
+        sessionStorage.setItem('productId', $(this).data('product-id'));
+        window.location.href = 'shop-details.html';
+    });
+    $(document).on('click', '.header__top__right__auth a', function(e) {
+        e.preventDefault();
+        if(userId){
+            sessionStorage.clear();
+            alert('LogOut successed!')
+            window.location.href = 'index.html'
+        }else{
+            window.location.href = 'login.html'
+        }
+    });
+});
+
+async function getCart(id) {
+    const response = await fetch('http://localhost:4000/api/users/cart/get', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id })
+    });
+
+    const result = await response.json();
+    return { result, ok: response.ok };
+}
+
+document.addEventListener('DOMContentLoaded', async function () {
+    const userId = sessionStorage.getItem('userId');
+
+    const targetSpans = document.querySelectorAll('li > a > i.fa-shopping-bag + span');
+
+    const updateCartCount = (count) => {
+        if (targetSpans.length === 0) {
+            console.warn('ไม่พบ element ที่ต้องการในหน้านี้');
+            return;
+        }
+        targetSpans.forEach(span => {
+            span.textContent = count;
+        });
+    };
+
+    if (!userId) {
+        updateCartCount(0);
+        return;
+    }
+
+    try {
+        const { result, ok } = await getCart(userId);
+
+        if (!ok || !result.cart) {
+            updateCartCount(0);
+            return;
+        }
+
+        const cart = result.cart;
+        const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        updateCartCount(totalQuantity);
+
+    } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการโหลด cart:', error);
+        updateCartCount(0);
+    }
+});
